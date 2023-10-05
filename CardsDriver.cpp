@@ -14,8 +14,11 @@ int testCards(){
         testDeck->draw(testHand);
     }
 
-    testHand->getCards();
+    list<Card> cards = *testHand->cardsInHand;
 
+    for(Card c : cards){
+        c.play(testDeck, testHand);
+    }
 
 
 }
