@@ -8,6 +8,7 @@ int testCards(){
 
     // Return the size of the deck. Should be 15. 
     testDeck->getDeck();
+    cout << "\n";
 
     // Creates a new hand 
     Hand* testHand = new Hand();
@@ -15,10 +16,12 @@ int testCards(){
     // Draw five cards from the deck and place them in the hand
     for(int i = 0; i < 5; i++){
         testDeck->draw(testHand);
+        cout << "\n";
     }
 
     // Return the size of the deck. Should be 10. 
     testDeck->getDeck();
+    cout << "\n";
 
     // Create a list of cards and assign it to the cards in the hand
     list<Card> cards = *testHand->cardsInHand;
@@ -27,7 +30,7 @@ int testCards(){
     for(Card c : cards){
         c.play(testDeck, testHand);
     }
-    
+
     // Return the size of the deck. Should be 15. 
     testDeck->getDeck();
 
