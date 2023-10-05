@@ -76,6 +76,11 @@ class Deck
 		Deck(int numCards);
 
 		/**
+		 * Copy constructor for Deck class
+		 */
+		Deck(Deck &copydeck);
+
+		/**
 		/	Destructor
 		*/
 		~Deck();
