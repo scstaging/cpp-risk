@@ -28,7 +28,7 @@ class Card
 		/**
 		/	Copy Constructor for Card Class
 		*/
-		Card(Card& copycard);
+		Card(const Card &copycard);
 		
 		/**
 		/	Destructor 

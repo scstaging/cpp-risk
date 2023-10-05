@@ -18,9 +18,8 @@ Card::Card(CardType spectype){
     type = new CardType(spectype);
 }
 
-
 // Copy constructor for Card class. 
-Card::Card(Card& copycard) {
+Card::Card(const Card &copycard) {
 	type = new CardType(*copycard.type);
 }
 
@@ -48,17 +47,17 @@ void Card::play(Deck* deck, Hand* hand) {
 		}
 		case blockade:
 		{
-			cout << "This is a card of type blockade. \n";
+			cout << "This is a card of type Blockade. \n";
 			break;
 		}
 		case airlift:
 		{
-			cout << "This is a card of type airlift. \n";
+			cout << "This is a card of type Airlift. \n";
 			break;
 		}
 		case diplomacy:
 		{
-			cout << "This is a card of type diplomacy. \n";
+			cout << "This is a card of type Diplomacy. \n";
 			break;
 		}
 		default:
@@ -164,6 +163,8 @@ string Deck::draw(Hand* hand) {
  
 	//Erases the card from the deck. 
 	deckCards->erase(it);
+
+	return "Cards found and erased.";
 }
 
 // Adds a card of a specific type to the deck.
@@ -185,7 +186,7 @@ Hand::Hand() {
 }
 
 // Copy constructor for Hand class.
-Hand::Hand(Hand& copyhand){
+Hand::Hand(Hand &copyhand){
 	list<Card>* newHand = new list<Card>(copyhand.cardsInHand->begin(), copyhand.cardsInHand->end());
 	this->cardsInHand = cardsInHand;
 }
@@ -200,6 +201,10 @@ Hand::~Hand() {
 void Hand::addCard(CardType& type) {
 	Card* newCard = new Card(type);
 	cardsInHand->push_back(*newCard);
+}
+
+void Hand::addCard(Card& card){
+	this->cardsInHand->push_back(card);
 }
 
 // Removes the first card of a specific type from the player's hand. 
