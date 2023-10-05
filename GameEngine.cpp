@@ -2,6 +2,11 @@
 #include <typeinfo>
 #include "GameEngine.h"
 
+// Defines each update function to handle transitions using the command
+// Control flow through available commands and handles accordingly
+// getInstance returns a new single object of defined type
+// Singleton pattern used to avoid excessive instantiation
+
 // Concrete State Class Declerations
 void Start::update(GameEngine* game, std::string command)
 {
@@ -104,18 +109,29 @@ GameState& Win::getInstance()
 }
 
 // Game Engine Class Declerations
+
+// Starts engine by setting currentState to beginning
 GameEngine::GameEngine()
 {
+    // Returns reference becuase GameEngine stores current state as pointer
     currentState = &Start::getInstance();
 }
+
+// Handles transition exit and enter logic and sets new state
 void GameEngine::setState(GameState& newState)
 {
+    // Execute code on exiting transition
     currentState->exit(this);
+    // Change transition
     currentState = &newState;
+    // Execute code on entering transition
     currentState->enter(this);
 }
+
+// Update function declared by each instance of GameState, and used here
 void GameEngine::update(std::string command)
 {
+    // Game engine update applies unique state's update logic
     currentState->update(this, command);
 }
 
