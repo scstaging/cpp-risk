@@ -1,22 +1,23 @@
 #include <iostream>
-#include <MainDriver.h>
+#include "MainDriver.h"
+#include "PlayerDriver.h"
 
 int main() {
 
     // Loads Map
-    testLoadMaps();
+    // testLoadMaps();
 
     // Loads Players
     testPlayers();
 
     // Loads Order List
-    testOrdersList();
+    // testOrdersList();
 
     // Loads Cards
-    testCards();
+    // testCards();
 
     // Game Engine
-    testGameStates();
+    // testGameStates();
 
     return 0;
 }
