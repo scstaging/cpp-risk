@@ -34,4 +34,6 @@ int testCards(){
     // Return the size of the deck. Should be 15. 
     testDeck->getDeck();
 
+    return 0;
+
 }
