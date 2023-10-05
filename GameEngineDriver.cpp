@@ -3,12 +3,19 @@
 
 // Free Function testGameStates()
 void testGameStates() {
+
+// Instantiates game engine
 GameEngine* engine = new GameEngine();
 
+    // while true, allows for breaking only when necessary
     while (true)
     {
+
+        // Display relevant information on each new iteration
         std::cout << "\nCurrent State: " << engine->getCurrentState() << std::endl;
         std::cout << "Enter Command: ";
+        
+        // Takes command as input
         std::string x;
         std::cin >> x;
 
@@ -27,6 +34,7 @@ GameEngine* engine = new GameEngine();
         }
     }
 
+    // Frees up memory
     delete engine;
 }
 
