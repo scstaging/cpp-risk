@@ -6,9 +6,11 @@ using std::cout;
 int testCards(){
     // Create a new deck
     Deck* testDeck = new Deck();
+    cout << "Deck created. \n\n";
 
+    cout << "Current size of the deck: ";
     cout << testDeck->getDeckSize();
-    cout << "\n";
+    cout << "\n\n";
 
     // Creates a new hand 
     Hand* testHand = new Hand();
@@ -18,13 +20,12 @@ int testCards(){
         testDeck->draw(testHand);
     }
 
-    cout << "testHand:\n";
-
-    cout << *testHand;
+    cout << *testHand << "\n";
 
     // Return the size of the deck. Should be 10. 
-    cout << testDeck->getDeckSize();
-    cout << "\n";
+    cout << "Current size of the deck: ";
+    cout << testDeck->getDeckSize() << "\n\n";
+  
 
     // Create a list of cards and assign it to the cards in the had
     list<Card> cards = *testHand->getCardsInHand();
@@ -33,9 +34,11 @@ int testCards(){
     for(Card c : cards){
         c.play(testDeck, testHand);
     }
+    cout << "\n";
 
     // Return size of the deck. Should be 15.
-    cout << testDeck->getDeckSize() << "\n";
+    cout << "Current size of the deck: ";
+    cout << testDeck->getDeckSize();
     
     return 0;
 
