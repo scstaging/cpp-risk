@@ -249,7 +249,7 @@ Hand::~Hand() {
 // Adds a card of a specific type to the player's hand.
 void Hand::addCard(CardType& type) {
 	Card* newCard = new Card(type);
-	cardsInHand->push_back(*newCard);
+	this->cardsInHand->push_back(*newCard);
 }
 
 void Hand::addCard(Card& card){
