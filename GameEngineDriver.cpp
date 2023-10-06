@@ -1,5 +1,5 @@
 #include <iostream>
-#include "GameEngine.cpp"
+#include "GameEngine.h"
 
 // Free Function testGameStates()
 void testGameStates() {
