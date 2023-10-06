@@ -23,13 +23,13 @@ class Player {
 
         /* Getters */
         string* getPlayerName() const;
-        // Hand* getHand() const;
+        Hand* getHand() const;
         // OrdersList* getOrdersList() const;
         // vector<Territory*> getTerritories() const;
 
         /* Setters */
         void setPlayerName(string name);
-        // void setHand(Hand* hand);
+        void setHand(Hand* hand);
         // void setOrdersList(OrdersList* ordersList);
         // void setTerritories(vector<Territory*> territories);
 
@@ -40,7 +40,7 @@ class Player {
 
     private:
         string* playerName;
-        // Hand* hand;
+        Hand* hand;
         // OrdersList* ordersList;
         // vector<Territory*> territories;
 };

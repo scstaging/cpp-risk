@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Cards.h"
 
 #include <iostream>
 #include <vector>
@@ -12,7 +13,7 @@ using std::cout;
 Player::Player()
 {
     this->playerName = new string("New Player");
-    // this->hand = new Hand();
+    this->hand = new Hand();
     // this->orders = new OrdersList();
     // this->territories = new Territory();
 }
@@ -21,29 +22,25 @@ Player::Player()
 Player::Player(string name)
 {
     this->playerName = new string(name);
-    // this->hand = new Hand();
+    this->hand = new Hand();
     // this->orders = new OrdersList();
     // this->territories = new Territory();
-    
-    cout << " DEBUG : Created player named " << *this->playerName << "\n";
 }
 
 /* Copy Constructor */
 Player::Player(const Player& copiedPlayer)
 {
     this->playerName = new string(*copiedPlayer.playerName);
-    // this->hand = copiedPlayer.hand;
+    this->hand = new Hand(*copiedPlayer.hand);
     // this->orders = copiedPlayer.orders;
     // this->territories = copiedPlayer.territories;
-    
-    cout << " DEBUG : Copy constructor created player named " << *this->playerName << "\n";
 }
 
 /* Destructor */
 Player::~Player() 
 {
     delete playerName;
-    // delete hand;
+    delete hand;
     // delete ordersList;
     // delete territories;
 }
@@ -54,7 +51,7 @@ Player::~Player()
 Player& Player::operator=(const Player& player) 
 {
     *this->playerName = *player.playerName;
-    // *this->hand = *player.hand; 
+    *this->hand = *player.hand; 
     // *this->orders = *player.orders;
     // *this->territories = *player.territories;
     
@@ -65,7 +62,7 @@ Player& Player::operator=(const Player& player)
 ostream& operator<<(ostream& output, const Player& player)
 {
     output << "Player name: " << *player.playerName 
-    << ",\nPlayer's hand: " << "(replace with *player.hand)" 
+    << ",\nPlayer's hand: " << *player.hand
     << ",\nPlayer's orders list: " << " (replace with *player.ordersList)" 
     << ",\nPlayer's territories: " << "(replace with *player.territories)\n";
 
@@ -78,12 +75,10 @@ string* Player::getPlayerName() const
     return this->playerName;
 }
 
-/*
 Hand* Player::getHand() const 
 {
-    // return this->hand;
+    return this->hand;
 }
-*/
 
 /* 
 OrdersList* Player::getOrdersList() const 
@@ -105,12 +100,11 @@ void Player::setPlayerName(string name)
     *this->playerName = name;
 }
 
-/* 
 void Player::setHand(Hand* hand) 
 {
-    this->hand = hand;
+    *this->hand = *hand;
 }
-*/
+// 
 
 /* 
 void Player::setOrdersList(OrdersList* ordersList) 

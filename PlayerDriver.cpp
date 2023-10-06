@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Cards.h"
 #include "PlayerDriver.h"
 
 #include <iostream>
@@ -57,6 +58,17 @@ void testPlayers()
 
     cout << "Values of player p1 after assignment from p2:\n" << *p1 << endl;
 
+    cout << "Player p1's empty hand: " << *p1->getHand();
+
+    Deck* testDeck = new Deck();
+    cout << "Test deck created. Drawing 5 cards from deck into player's hand:\n\n";
+
+    for(int i = 0; i < 5; i++){
+        testDeck->draw(p1->getHand());
+    }
+
+    cout << "Player p1's hand: " << *p1->getHand() << endl;
+
     /* TEST: issueOrder() */
 
     /* TEST: toAttack() */
@@ -68,6 +80,8 @@ void testPlayers()
     delete p2;
 
     delete copiedPlayer;
+
+    delete testDeck;
 
     return;
 }
