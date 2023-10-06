@@ -36,6 +36,7 @@ GameEngine* engine = new GameEngine();
 
     // Frees up memory
     delete engine;
+    engine = NULL;
 }
 
 int main() {

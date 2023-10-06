@@ -36,348 +36,179 @@ class GameState
 class Start : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        Start() 
-        { 
-            this->stateName = "Start";
-            this->transitions = { "loadmap" };
-            this->changeState = "loadmap";
-        }
+        Start();
 
         // Copy constructor
-        Start(Start &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        Start(Start &other);
 
         // Assignment Operator
         Start& operator=(const Start& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
-        
+        std::istream& operator >> (std::istream &in);
 };
 
 class MapLoaded : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        MapLoaded() 
-        { 
-            this->stateName = "Map Loaded"; 
-            this->transitions = { "loadmap", "validatemap" };
-            this->changeState = "validatemap";
-        }
+        MapLoaded();
         
         // Copy constructor
-        MapLoaded(MapLoaded &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        MapLoaded(MapLoaded &other);
 
         // Assignment operator overload
         MapLoaded& operator=(const MapLoaded& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
+        std::istream& operator >> (std::istream &in);
 };
 
 class MapValidated : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        MapValidated() 
-        { 
-            this->stateName = "Map Validated"; 
-            this->transitions = { "addplayer" };
-            this->changeState = "addplayer";
-        }
+        MapValidated();
 
          // Copy constructor
-        MapValidated(MapValidated &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        MapValidated(MapValidated &other);
 
         MapValidated& operator=(const MapValidated& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
+        std::istream& operator >> (std::istream &in);
 };
 
 class PlayersAdded : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        PlayersAdded() 
-        { 
-            this->stateName = "Players Added"; 
-            this->transitions = { "addplayer", "assigncountries" };
-            this->changeState = "assigncountries";
-        }
+        PlayersAdded();
         
         // Copy constructor
-        PlayersAdded(PlayersAdded &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        PlayersAdded(PlayersAdded &other);
         
         PlayersAdded& operator=(const PlayersAdded& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
+        std::istream& operator >> (std::istream &in);
 };
 
 class AssignReinforcements : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        AssignReinforcements() 
-        { 
-            this->stateName = "Assign Reinforcements"; 
-            this->transitions = { "issueorder" };
-            this->changeState = "issueorder";
-        }
+        AssignReinforcements();
         
         // Copy constructor
-        AssignReinforcements(AssignReinforcements &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        AssignReinforcements(AssignReinforcements &other);
 
         AssignReinforcements& operator=(const AssignReinforcements& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
+        std::istream& operator >> (std::istream &in);
 };
 
 class IssueOrders : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        IssueOrders() 
-        { 
-            this->stateName = "Issue Orders";
-            this->transitions = { "issueorder", "endissueorders" };
-            this->changeState = "endissueorders";
-        }
+        IssueOrders();
 
         // Copy constructor
-        IssueOrders(IssueOrders &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        IssueOrders(IssueOrders &other);
 
         IssueOrders& operator=(const IssueOrders& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
+        std::istream& operator >> (std::istream &in);
 };
 
 class ExecuteOrders : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        ExecuteOrders() 
-        { 
-            this->stateName = "Execute Orders";
-            this->transitions = { "execorder", "endexecorders", "win" };
-            this->changeState = "win";
-        }
+        ExecuteOrders();
         
         // Copy constructor
-        ExecuteOrders(ExecuteOrders &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        ExecuteOrders(ExecuteOrders &other);
 
         ExecuteOrders& operator=(const ExecuteOrders& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
+        std::istream& operator >> (std::istream &in);
 };
 
 class Win : public GameState
 {
     public:
-        void enter(GameEngine* game) {}
+        void enter(GameEngine* game);
         void update(GameEngine* game, std::string command);
-        void exit(GameEngine* game) {}
+        void exit(GameEngine* game);
         static GameState& getInstance();
-        std::string getStateName()
-        {
-            return this->stateName;
-        }
-        std::string getChangeState()
-        {
-            return this->changeState;
-        }
+        std::string getStateName();
+        std::string getChangeState();
 
     private:
-        Win() 
-        { 
-            this->stateName = "Win";
-            this->transitions = { "play", "end" }; 
-            this->changeState = "end";
-        }
+        Win();
 
         // Copy constructor
-        Win(Win &other)
-        {
-            // Member copys
-            this->stateName = other.stateName;
-            this->transitions = other.transitions;
-            this->changeState = other.changeState;
-        }
+        Win(Win &other);
 
         Win& operator=(const Win& other);
 
         // Stream Insertion Overload
-        std::istream& operator >> (std::istream &in)
-        {
-            // Might be useful later
-
-        }
+        std::istream& operator >> (std::istream &in);
 };
 
 // Game Engine Class
@@ -387,26 +218,27 @@ class GameEngine
         // Stores pointer to current state
         GameState* currentState;
     public:
+        // Default constructor
         GameEngine();
+        // Copy constructor
+        GameEngine(GameEngine &other);
+        // Assignment operator
+        GameEngine& operator=(const GameEngine& other);
+        // Stream Insertion Overload
+        std::istream& operator >> (std::istream &in);
+
         // Returns current state
-        inline std::string getCurrentState() const { return currentState->getStateName(); }
+        std::string getCurrentState();
         
         // Iterates through transitions
-        bool validateTransition(std::string x) {
-            // O(n) but x is almost exclusively < 3
-            for (int i = 0; i < currentState->transitions.size(); i++) {
-                // Checks if command is in array of transitions
-                if (x == currentState->transitions[i])
-                    return true;
-            }
-            // Command is not in array of transitions
-            return false;
-        }
+        bool validateTransition(std::string x);
 
         // Checks if command is the transition command
-        bool validateChangeState(std::string x) { return x == currentState->getChangeState(); }
+        bool validateChangeState(std::string x);
+
         // Updates state
         void update(std::string command);
+
         // Each transition applies it's own logic
         void setState(GameState& newState);
 };
