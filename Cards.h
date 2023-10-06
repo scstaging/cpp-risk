@@ -175,3 +175,5 @@ class Hand
 		*/
 		list<Card>* cardsInHand;
 };
+
+int testCards();

@@ -44,3 +44,5 @@ class Player {
         // OrdersList* ordersList;
         // vector<Territory*> territories;
 };
+
+void testPlayers();

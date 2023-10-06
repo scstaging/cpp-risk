@@ -243,6 +243,8 @@ class GameEngine
         void setState(GameState& newState);
 };
 
+void testGameStates();
+
 /*
     References: 
 

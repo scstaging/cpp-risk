@@ -1,6 +1,6 @@
-#include "CardsDriver.h"
-#include "GameEngineDriver.cpp"
-#include "PlayerDriver.h"
+#include "Cards.h"
+#include "GameEngine.h"
+#include "Player.h"
 
 #include <iostream>
 
