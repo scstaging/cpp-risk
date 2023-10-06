@@ -1,6 +1,8 @@
-#include <iostream>
-#include "MainDriver.h"
+#include "CardsDriver.h"
+#include "GameEngineDriver.h"
 #include "PlayerDriver.h"
+
+#include <iostream>
 
 int main() {
 
@@ -17,7 +19,7 @@ int main() {
     testCards();
 
     // Game Engine
-    // testGameStates();
+    testGameStates();
 
     return 0;
 }
