@@ -1,6 +1,5 @@
 #include <iostream>
-#include "GameEngine.h"
-#include "GameEngineDriver.h"
+#include "GameEngine.cpp"
 
 // Free Function testGameStates()
 void testGameStates() {
@@ -40,10 +39,8 @@ GameEngine* engine = new GameEngine();
     engine = NULL;
 }
 
-/*
-int main() {
-    testGameStates();
+// int main() {
+//     testGameStates();
 
-    return 0;
-}
-*/
+//     return 0;
+// };
