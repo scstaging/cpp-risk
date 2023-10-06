@@ -178,6 +178,14 @@ int Deck::getDeck() {
 	return deckCards->size();
 }
 
+istream& operator>>(istream& input, const Deck& deck){
+	Card incard;
+	input >> incard;
+	deck.deckCards->push_back(incard);
+
+	return input;
+}
+
 // Hand class
 
 // Default constructor for Hand class. 
@@ -230,4 +238,11 @@ string Hand::getCards() {
 	}
 
 	return *result;
+}
+
+istream& operator>>(istream& input, const Hand& hand){
+	Card incard;
+	input >> incard;
+	hand.cardsInHand->push_back(incard);
+	return input;
 }

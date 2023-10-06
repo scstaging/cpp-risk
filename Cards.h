@@ -55,6 +55,8 @@ class Card
         */
         string cardTypeToString(CardType type);
 
+		// Stream insertion operator
+		friend std::istream& operator>>(std::istream& input, const Card& card);
 };
 
 class Deck 
@@ -100,7 +102,8 @@ class Deck
 		*/
 		int getDeck();
 
-		
+		// Stream insertion operator
+		friend std::istream& operator>>(std::istream& input, const Deck& deck);
 };
 
 class Hand
@@ -145,5 +148,8 @@ class Hand
 		/	Returns cards in the player's hand
 		*/
 		string getCards();
+
+		// Stream insertion operator
+		friend std::istream& operator>>(std::istream& input, const Hand& hand);
 
 };

@@ -2,7 +2,7 @@
 #include "Cards.h"
 #include "Cards.cpp"
 
-int main(){
+int testCards(){
     // Create a new deck
     Deck* testDeck = new Deck();
 
@@ -17,15 +17,19 @@ int main(){
         testDeck->draw(testHand);
     }
 
+    // Return the size of the deck. Should be 10. 
     cout << testDeck->getDeck();
     cout << "\n";
 
+    // Create a list of cards and assign it to the cards in the had
     list<Card> cards = *testHand->cardsInHand;
 
+    // Play each card in the hand, depositing them back into the deck
     for(Card c : cards){
         c.play(testDeck, testHand);
     }
 
+    // Return size of the deck. Should be 15.
     cout << testDeck->getDeck();
     
     return 0;
