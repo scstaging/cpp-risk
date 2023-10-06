@@ -12,9 +12,6 @@ enum CardType { bomb, reinforcement, blockade, airlift, diplomacy };
 class Card
 {
 	public:
-
-		CardType* type;
-
 		/**
 		/	Default Constructor for Card Class
 		*/
@@ -43,7 +40,7 @@ class Card
 		/**
 		/	Returns the type of the card
 		*/
-		CardType getType();
+		CardType getType() const;
 
 		/**
 		/	Sets the type of the card
@@ -53,19 +50,24 @@ class Card
         /**
         /   Returns the card type as a string
         */
-        string cardTypeToString(CardType type);
+        string cardTypeToString(CardType type) const;
+		
+		// Assignment operator
+		Card& operator=(const Card& card);
 
 		// Stream insertion operator
-		friend std::istream& operator>>(std::istream& input, const Card& card);
+		friend std::ostream&operator<<(std::ostream& output, const Card& card);
+
+		// Stream extraction operator
+		friend std::istream& operator>>(std::istream& input, Card& card);
+
+	private:
+		CardType* type;
 };
 
 class Deck 
 {
 	public:
-
-		list<Card>* deckCards;
-
-		int* deckSize;
 
 		/**
 		/	Default constructor for Deck class
@@ -100,19 +102,26 @@ class Deck
 		/**
 		/	Lists the number of cards currently in the deck
 		*/
-		int getDeck();
+		int getDeckSize() const;
+
+		// Assignment operator
+		Deck& operator=(const Deck& deck);
 
 		// Stream insertion operator
+		friend std::ostream&operator<<(std::ostream& output, const Deck& deck);
+
+		// Stream extraction operator
 		friend std::istream& operator>>(std::istream& input, const Deck& deck);
+
+		private:
+			list<Card>* deckCards;
+
+			int* deckSize;
 };
 
 class Hand
 {
 	public:
-		/**
-		/	List containing cards
-		*/
-		list<Card>* cardsInHand;
 
 		/**
 		/	Default constructor for hand class
@@ -147,9 +156,22 @@ class Hand
 		/**
 		/	Returns cards in the player's hand
 		*/
-		string getCards();
+		string getCards() const;
+
+		list<Card>* getCardsInHand() const;
+
+		// Assignment operator
+		Hand& operator=(const Hand& hand);
 
 		// Stream insertion operator
+		friend std::ostream&operator<<(std::ostream& output, const Hand& hand);
+
+		// Stream extraction operator
 		friend std::istream& operator>>(std::istream& input, const Hand& hand);
 
+	private:
+		/**
+		/	List containing cards
+		*/
+		list<Card>* cardsInHand;
 };

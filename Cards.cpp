@@ -1,4 +1,3 @@
-#pragma once
 #include <iostream>
 using namespace std;
 
@@ -76,17 +75,17 @@ void Card::play(Deck* deck, Hand* hand) {
 }
 
 // Returns the type of the current card. 
-CardType Card::getType() {
+CardType Card::getType() const {
     return *this->type;
 }
 
 // Sets the type of the current card to a specified type. 
 void Card::setType(CardType* newType){
-    this->type = newType;
+    *this->type = *newType;
 }
 
 // Returns the type of a card as a string.
-string Card::cardTypeToString(CardType type){
+string Card::cardTypeToString(CardType type) const {
     switch(type){
         case CardType::airlift:
             return "airlift";
@@ -101,6 +100,26 @@ string Card::cardTypeToString(CardType type){
         default:
             return "Unknown";            
     }
+}
+
+// Overloaded assignment operator
+Card& Card::operator=(const Card& card) {
+	*this->type = *card.type;
+
+	return *this;
+}
+
+// Overloaded stream insertion operator
+std::ostream& operator<<(std::ostream& output, const Card& card) {
+	output << card.cardTypeToString(card.getType()) << "\n";
+
+	return output;
+}
+
+// Overloaded stream extraction operator
+std::istream& operator>>(std::istream& input, Card& card) {
+
+	return input;
 }
 
 // Deck class
@@ -140,7 +159,12 @@ Deck::Deck(int numCards) {
 // Copy constructor for deck class
 Deck::Deck(Deck &copydeck) {
 	list<Card>* newDeck = new list<Card>(copydeck.deckCards->begin(), copydeck.deckCards->end());
-	this->deckCards = deckCards;
+	this->deckCards = newDeck;
+}
+
+Deck::~Deck() {
+	delete this->deckCards;
+	deckCards = nullptr;
 }
 
 // Draw method for Deck class. Will allow the player to draw a card
@@ -174,10 +198,27 @@ void Deck::addCard(CardType type) {
 }
 
 // Returns the size of the deck. 
-int Deck::getDeck() {
+int Deck::getDeckSize() const {
 	return deckCards->size();
 }
 
+// Overloaded assignment operator
+Deck& Deck::operator=(const Deck& deck) {
+	delete this->deckCards;
+	
+	this->deckCards = new list<Card>(deck.deckCards->begin(), deck.deckCards->end());;
+
+	return *this;
+}
+
+// Overloaded stream insertion operator
+std::ostream& operator<<(std::ostream& output, const Deck& deck) {
+	output << "Deck has " << deck.getDeckSize() << " cards.\n";
+
+	return output;
+}
+
+// Overloaded stream extraction operator
 istream& operator>>(istream& input, const Deck& deck){
 	Card incard;
 	input >> incard;
@@ -196,7 +237,7 @@ Hand::Hand() {
 // Copy constructor for Hand class.
 Hand::Hand(Hand &copyhand){
 	list<Card>* newHand = new list<Card>(copyhand.cardsInHand->begin(), copyhand.cardsInHand->end());
-	this->cardsInHand = cardsInHand;
+	this->cardsInHand = newHand;
 }
 
 // Deconstructor for Hand Class. 
@@ -220,7 +261,7 @@ void Hand::removeCard(CardType& type) {
 	list<Card>::iterator it;
 
 	for (it = cardsInHand->begin(); it != cardsInHand->end(); ++it) {
-		if (*it->type == type) {
+		if (it->getType() == type) {
 			cardsInHand->erase(it);
 			return;
 		}
@@ -228,18 +269,41 @@ void Hand::removeCard(CardType& type) {
 }
 
 // Returns the type of each card in the player's hand. 
-string Hand::getCards() {
-	cout << "This hand has the following cards:";
+string Hand::getCards() const {
+	cout << "This hand has the following cards:\n";
 
 	string *result = new string("");
 
 	for (Card& card : *cardsInHand) {
-		*result += card.cardTypeToString(card.getType()); + " ";
+		*result += card.cardTypeToString(card.getType()) + " ";
 	}
+
+	*result += "\n";
 
 	return *result;
 }
 
+list<Card>* Hand::getCardsInHand() const {
+	return this->cardsInHand;
+}
+
+// Overloaded assignment operator
+Hand& Hand::operator=(const Hand& hand) {
+	delete this->cardsInHand;
+
+	this->cardsInHand = new list<Card>(hand.cardsInHand->begin(), hand.cardsInHand->end());
+
+	return *this;
+}
+
+// Overloaded stream insertion operator
+std::ostream& operator<<(std::ostream& output, const Hand& hand) {
+	output << hand.getCards();
+
+	return output;
+}
+
+// Overloaded stream extraction operator
 istream& operator>>(istream& input, const Hand& hand){
 	Card incard;
 	input >> incard;

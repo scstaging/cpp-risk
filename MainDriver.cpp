@@ -14,7 +14,7 @@ int main() {
     // testOrdersList();
 
     // Loads Cards
-    // testCards();
+    testCards();
 
     // Game Engine
     // testGameStates();
