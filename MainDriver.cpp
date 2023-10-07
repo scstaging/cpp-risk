@@ -1,13 +1,14 @@
 #include "CardsDriver.h"
 #include "GameEngineDriver.h"
 #include "PlayerDriver.h"
+#include "MapDriver.h"
 
 #include <iostream>
 
 int main() {
 
     // Loads Map
-    // testLoadMaps();
+    testLoadMaps();
 
     // Loads Players
     testPlayers();

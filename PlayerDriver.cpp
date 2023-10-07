@@ -22,6 +22,10 @@ void testPlayers()
         - Overloaded stream insertion operator implemented
     */
 
+    Maploader maploader;
+    Map* test_map = maploader.readFiles("map1.map");
+    vector <Territory*> map_territories = test_map->getTerritory();
+
     cout << "**** Testing player functionality ****\n";
 
     cout << "\n**** Testing Player Default Constructor ****\n";
@@ -103,9 +107,19 @@ void testPlayers()
 
     cout << "\np1 has issued the following orders:\n" << *p1->getOrdersList();
 
+    p2->setTerritories(map_territories);
+
+    p2->getTerritories();
+    
+    cout << "\n";
+
     /* TEST: toAttack() */
+    p2->toAttack();
+
+    cout << "\n";
 
     /* TEST: toDefend() */
+    p2->toDefend();
 
     delete p1;
 

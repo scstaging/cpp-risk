@@ -30,9 +30,6 @@ Player::Player(string name)
 /* Copy Constructor */
 Player::Player(const Player& copiedPlayer)
 {   
-    delete playerName;
-    delete hand;
-    delete ordersList;
     this->playerName = new string(*copiedPlayer.playerName);
     this->hand = new Hand(*copiedPlayer.hand);
     this->ordersList = new OrdersList(*copiedPlayer.ordersList);
@@ -90,12 +87,12 @@ OrdersList* Player::getOrdersList() const
 }
 
 
-/* 
+ 
 vector<Territory*> Player::getTerritories() const
 {
     return this->territories;
 }
-*/
+
 
 /* Setters */
 void Player::setPlayerName(string name) 
@@ -108,12 +105,25 @@ void Player::setHand(Hand* hand)
     *this->hand = *hand;
 }
 
-/* 
+
 void Player::setTerritories(vector<Territory*> territories) 
 {
     this->territories = territories;
+
+    int size = this->territories.size();
+
+    unsigned int offset = int(size/10);
+    unsigned int offset_2 = 2 * offset;
+
+    cout << "offset: " << offset;
+
+    vector<Territory*> toAttack = vector<Territory*>(this->territories.begin(), this->territories.begin()+offset);
+    vector<Territory*> toDefend = vector<Territory*>(this->territories.begin()+offset, this->territories.begin()+offset_2);
+
+    this->attack = toAttack;
+    this->defend = toDefend;
 }
-*/
+
 
 /* Mandatory Features For A1 */
 void Player::issueOrder()
@@ -126,19 +136,31 @@ void Player::issueOrder()
     return;
 }
 
-/* 
-vector<Territory*> Player::toAttack() 
-{
-    // return arbitrary (for now) list of territories that are to be attacked
-}
-*/
 
-/*
 vector<Territory*> Player::toAttack() 
 {
     // return arbitrary (for now) list of territories that are to be attacked
+    cout << "To attack:\n";
+    for (unsigned int i = 0; i < this->attack.size(); i++) {
+        cout << this->attack[i]->getNameOfTerritory() << "\n";
+    }
+
+    return this->attack;
 }
-*/
+
+
+
+vector<Territory*> Player::toDefend() 
+{
+    // return arbitrary (for now) list of territories that are to be defended
+    cout << "To defend:\n";
+    for (unsigned int i = 0; i < this->defend.size(); i++) {
+        cout << this->defend[i]->getNameOfTerritory() << "\n";
+    }
+
+    return this->defend;
+}
+
 
 /* Additional Features */
 bool Player::hasCard(CardType type) {
