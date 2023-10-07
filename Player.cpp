@@ -140,3 +140,25 @@ vector<Territory*> Player::toAttack()
     // return arbitrary (for now) list of territories that are to be attacked
 }
 */
+
+/* Additional Features */
+bool Player::hasCard(CardType type) {
+    for (Card& card : *this->getHand()->getCardsInHand()) {
+		if (card.getType() == type) {
+            return true;
+        }
+	}
+    return false;
+}
+
+int Player::getAvailableReinforcements() {
+    int available = 0;
+    
+    for (Card& card : *this->getHand()->getCardsInHand()) {
+		if (card.getType() == CardType::reinforcement) {
+            available++;
+        }
+	}
+    
+    return available;
+}

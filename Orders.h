@@ -7,6 +7,8 @@
 #include <list>
 #include <iostream>
 
+#include "Player.h"
+
 // Forward declaration
 class OrdersList;
 

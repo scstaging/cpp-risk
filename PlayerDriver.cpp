@@ -57,8 +57,8 @@ void testPlayers()
     cout << "Address of pointer p1: " << p1 << endl;
 
     cout << "Values of player p1 after assignment from p2:\n" << *p1 << endl;
-
-    cout << "Player p1's empty hand: " << *p1->getHand();
+    
+    /* TEST: drawing Cards from Deck to p1's Hand, getHand() and getAvailableReinforcements */
 
     Deck* testDeck = new Deck();
     cout << "Test deck created. Drawing 5 cards from deck into player's hand:\n\n";
@@ -67,7 +67,35 @@ void testPlayers()
         testDeck->draw(p1->getHand());
     }
 
+    cout << "Player p2's empty hand: " << *p2->getHand();
+    
+    cout << "Player p2 has " << p2->getAvailableReinforcements() << " reinforcement cards.\n\n";
+    
     cout << "Player p1's hand: " << *p1->getHand() << endl;
+
+    cout << "Player p1 has " << p1->getAvailableReinforcements() << " reinforcement cards.\n\n"; 
+
+    /* TEST: hasCard() */
+
+    if (p1->hasCard(CardType::bomb)) {
+        cout << "p1 has a bomb card\n";
+    }
+
+    if (p1->hasCard(CardType::reinforcement)) {
+        cout << "p1 has a reinforcement card\n";
+    }
+
+    if (p1->hasCard(CardType::blockade)) {
+        cout << "p1 has a blockade card\n";
+    }
+
+    if (p1->hasCard(CardType::airlift)) {
+        cout << "p1 has an airlift card\n";
+    }
+
+    if (p1->hasCard(CardType::diplomacy)) {
+        cout << "p1 has a diplomacy card\n";
+    }
 
     /* TEST: issueOrder() */
 
