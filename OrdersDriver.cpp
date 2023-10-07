@@ -2,7 +2,7 @@
 #include "Orders.h"
 #include "Player.h"
 #include "Cards.h"
-//#include "Map.h"
+#include "Map.h"
 #include <iostream>
 
 void testOrdersLists() {
