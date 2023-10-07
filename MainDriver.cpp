@@ -2,6 +2,7 @@
 #include "GameEngineDriver.h"
 #include "PlayerDriver.h"
 #include "MapDriver.h"
+#include "OrdersDriver.h"
 
 #include <iostream>
 
@@ -14,7 +15,7 @@ int main() {
     testPlayers();
 
     // Loads Order List
-    // testOrdersList();
+    testOrdersLists();
 
     // Loads Cards
     testCards();
