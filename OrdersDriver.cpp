@@ -1,7 +1,7 @@
 #include "OrdersDriver.h"
 #include "Orders.h"
-//#include "Player.h"
-//#include "Cards.h"
+#include "Player.h"
+#include "Cards.h"
 //#include "Map.h"
 #include <iostream>
 
