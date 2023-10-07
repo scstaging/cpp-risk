@@ -1,6 +1,6 @@
 #pragma once
 #include "Cards.h"
-// #include "Orders.h"
+#include "Orders.h"
 // #include "Map.h"
 
 #include <vector>
@@ -9,6 +9,9 @@
 using std::istream;
 using std::ostream;
 using std::string;
+
+// forward declaration of OrdersList class
+class OrdersList;
 
 class Player {
     public:
@@ -24,13 +27,12 @@ class Player {
         /* Getters */
         string* getPlayerName() const;
         Hand* getHand() const;
-        // OrdersList* getOrdersList() const;
+        OrdersList* getOrdersList() const;
         // vector<Territory*> getTerritories() const;
 
         /* Setters */
         void setPlayerName(string name);
         void setHand(Hand* hand);
-        // void setOrdersList(OrdersList* ordersList);
         // void setTerritories(vector<Territory*> territories);
 
         /* Mandatory Features For A1 */
@@ -45,6 +47,6 @@ class Player {
     private:
         string* playerName;
         Hand* hand;
-        // OrdersList* ordersList;
+        OrdersList* ordersList;
         // vector<Territory*> territories;
 };

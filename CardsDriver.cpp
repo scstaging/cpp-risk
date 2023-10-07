@@ -5,6 +5,8 @@
 using std::cout;
 
 int testCards(){
+    cout << "\n**** Testing player functionality ****\n";
+
     // Create a new deck
     Deck* testDeck = new Deck();
     cout << "Deck created. \n\n";
