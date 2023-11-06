@@ -1,4 +1,5 @@
 #include <iostream>
+using namespace std;
 #include <typeinfo>
 #include "GameEngine.h"
 
@@ -181,6 +182,7 @@ GameState& PlayersAdded::getInstance()
     static PlayersAdded singleton;
     return singleton;
 }
+// Reinforcement Phase
 
 // Default constructor
 AssignReinforcements::AssignReinforcements() 
@@ -223,6 +225,8 @@ GameState& AssignReinforcements::getInstance()
     static AssignReinforcements singleton;
     return singleton;
 }
+
+// Issuing Order Phase
 
 // Default constructor
 IssueOrders::IssueOrders() 
@@ -267,6 +271,9 @@ GameState& IssueOrders::getInstance()
     static IssueOrders singleton;
     return singleton;
 }
+
+// Execute Orders Phase
+
 
 // Default constructor
 ExecuteOrders::ExecuteOrders() 
@@ -407,6 +414,40 @@ void GameEngine::update(std::string command)
 {
     // Game engine update applies unique state's update logic
     currentState->update(this, command);
+}
+
+void GameEngine::mainGameLoop(){
+    bool gameOver = false;
+    std::string* winningPlayer;
+
+    while(!gameOver){
+        // Reinforcements Phase
+        reinforcementsPhase();
+        // Issue Orders Phase
+        issueOrdersPhase();
+        // Execute Orders Phase
+        executeOrdersPhase();
+
+        auto it = listOfPlayers.begin();
+        while (it != listOfPlayers.end()) {
+            auto currentPlayer = it++;
+            if ((*currentPlayer)->getTerritories().empty()) {
+                cout << (*currentPlayer)->getPlayerName() << "has lost all their territories!" << endl; 
+                listOfPlayers.erase(currentPlayer);
+            }
+        }
+
+        for (Player* player : listOfPlayers){
+            if(player->getTerritories().size() == map->getTerritory().size()){
+                gameOver = true;  
+                winningPlayer = player->getPlayerName();
+            } 
+        }
+
+        cout<< "The winner is: " << winningPlayer << "!" << endl;
+
+    };
+
 }
 
 /*

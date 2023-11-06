@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "Player.h"
 
 class GameEngine;
 
@@ -217,6 +218,9 @@ class GameEngine
     private:
         // Stores pointer to current state
         GameState* currentState;
+
+        list<Player*> listOfPlayers;
+        Map* map;
     public:
         // Default constructor
         GameEngine();
@@ -241,6 +245,14 @@ class GameEngine
 
         // Each transition applies it's own logic
         void setState(GameState& newState);
+
+        void mainGameLoop();
+
+        void reinforcementsPhase();
+
+        void issueOrdersPhase();
+
+        void executeOrdersPhase();
 };
 
 /*
