@@ -86,7 +86,19 @@ OrdersList* Player::getOrdersList() const
     return this->ordersList;
 }
 
+int* Player::getReinforcementPool() const
+{
+    return this->reinforcementPool;
+}
 
+void Player::incrementReinforcementPool(int increase){
+    this->reinforcementPool += increase;
+}
+
+vector<Continent*> Player::getContinents() const
+{
+    return this->continents;
+}
  
 vector<Territory*> Player::getTerritories() const
 {

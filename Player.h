@@ -30,6 +30,9 @@ class Player {
         string* getPlayerName() const;
         Hand* getHand() const;
         OrdersList* getOrdersList() const;
+        int* getReinforcementPool() const; 
+        void incrementReinforcementPool(int increase); 
+        vector<Continent*> getContinents() const;
         vector<Territory*> getTerritories() const;
 
         /* Setters */
@@ -50,6 +53,8 @@ class Player {
         string* playerName;
         Hand* hand;
         OrdersList* ordersList;
+        int* reinforcementPool; 
+        vector<Continent*> continents;
         vector<Territory*> territories;
         vector<Territory*> attack;
         vector<Territory*> defend;

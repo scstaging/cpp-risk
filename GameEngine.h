@@ -4,7 +4,6 @@
 #include "Player.h"
 
 class GameEngine;
-
 // State Template Class
 class GameState
 {
@@ -218,10 +217,13 @@ class GameEngine
     private:
         // Stores pointer to current state
         GameState* currentState;
-
         list<Player*> listOfPlayers;
         Map* map;
+
     public:
+
+        static const int MINIMUM_NUMBER_OF_REINFORCEMENTS; 
+
         // Default constructor
         GameEngine();
         // Copy constructor

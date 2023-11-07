@@ -10,11 +10,15 @@ class Continent
 {
 private:
     string nameOfContinent;
+    int controlBonus = 0;
+    vector<Territory*> continentTerritories;
 
 public:
     Continent();
-    Continent(string name);
+    Continent(string name, int bonus);
     string getNameOfContinent();
+    int getControlBonus() const;
+    vector<Territory*> getContinentTerritories() const; 
 };
 
 class Territory

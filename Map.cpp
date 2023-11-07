@@ -34,7 +34,7 @@ Map *Maploader::readFiles(string filePath)
                     break;}
                 found = line.find(cDelimiter);
                 nameOfContinent = line.substr(0, found);
-                Continent *ptrContinent =  new Continent(nameOfContinent);
+                Continent *ptrContinent =  new Continent(nameOfContinent); //Include read for control bonus
                 theMap->pushContinent(ptrContinent);
             }
             // vector <Continent*> xx = theMap->getContinent();
@@ -330,12 +330,18 @@ Continent::Continent()
     nameOfContinent = "";
 }
 
-Continent::Continent(string name)
+Continent::Continent(string name, int bonus)
 {
     nameOfContinent = name;
+    controlBonus = bonus;
 }
 
 string Continent::getNameOfContinent()
 {
     return nameOfContinent;
+}
+
+int Continent::getControlBonus() const
+{
+    return controlBonus;
 }

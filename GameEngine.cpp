@@ -10,6 +10,8 @@ using namespace std;
 
 // Concrete State Class Declerations
 
+const int GameEngine::MINIMUM_NUMBER_OF_REINFORCEMENTS = 3;
+
 // Default constructor
 Start::Start() 
 { 
@@ -428,6 +430,7 @@ void GameEngine::mainGameLoop(){
         // Execute Orders Phase
         executeOrdersPhase();
 
+        //Checks to see if anyone has lost all their territories
         auto it = listOfPlayers.begin();
         while (it != listOfPlayers.end()) {
             auto currentPlayer = it++;
@@ -437,6 +440,7 @@ void GameEngine::mainGameLoop(){
             }
         }
 
+        //Checks to see if anyone has conquered all territories
         for (Player* player : listOfPlayers){
             if(player->getTerritories().size() == map->getTerritory().size()){
                 gameOver = true;  
@@ -448,6 +452,54 @@ void GameEngine::mainGameLoop(){
 
     };
 
+}
+
+void GameEngine::reinforcementsPhase(){
+    for(Player* player : listOfPlayers){
+        int reinforcement = 0; 
+        int territoriesOwned = player->getTerritories().size(); 
+
+        //Integer division so result is rounded down
+        reinforcement += territoriesOwned / 3;
+
+        //Updates list of continents that player owns territories in. 
+        for(Territory* t : player->getTerritories()){
+            Continent* continent = t->getContinent();
+            auto& playerContinents = player->getContinents(); 
+
+            auto it = std::find(playerContinents.begin(), playerContinents.end(), continent);
+
+            if(it == playerContinents.end()){
+                playerContinents.push_back(continent);
+            }
+        }
+
+        //Checks to see if player owns all territories in any continent. Applies control bonus if this is the case.
+        for(Continent* c : player->getContinents()){
+            int ownedTerritories = 0; 
+            const std::vector<Territory*>& continentTerritories = c->getContinentTerritories();
+            auto& playerTerritories = player->getTerritories();
+
+            for(Territory* t : continentTerritories){
+                auto it = std::find(playerTerritories.begin(), playerTerritories.end(), t);
+                if(it != playerTerritories.end()){
+                    ownedTerritories++;
+                }
+            }
+
+            if(ownedTerritories == continentTerritories.size()){
+                reinforcement += c->getControlBonus(); 
+            }
+        }
+
+        //Gives player minimum number of reinforcements if current count is below. 
+        if(reinforcement < MINIMUM_NUMBER_OF_REINFORCEMENTS){
+            reinforcement = MINIMUM_NUMBER_OF_REINFORCEMENTS;
+        }
+
+        //Adds reinforcements to the player's reinforcement pool. 
+        player->incrementReinforcementPool(reinforcement);
+    }
 }
 
 /*
