@@ -1,6 +1,7 @@
 #include <iostream>
 using namespace std;
 #include <typeinfo>
+#include <map>
 #include "GameEngine.h"
 
 // Defines each update function to handle transitions using the command
@@ -504,8 +505,30 @@ void GameEngine::reinforcementsPhase(){
 
 void GameEngine::issueOrdersPhase(){
 
+    std::map<string*, bool> playerStatus;
 
+    // Setting all the values of playerStatus to true
+    for (Player* player : listOfPlayers) {
+        playerStatus[player->getPlayerName()] = true;
+    }
 
+    //Will keep count of the players that have not ended their turn
+    int playersThatCanGo = listOfPlayers.size();
+    
+    //Will go through list of players until all players have ended their turn
+    while(playersThatCanGo > 0){
+        for(Player* player : listOfPlayers){
+            if(playerStatus[player->getPlayerName()]){
+                //issueOrder function will return "true" if turn is not ended, and "false" if it is
+                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map);
+                
+                //if issueOrder function returns "false", means player has ended their turn. Decrements # of players that can go
+                if(!playerStatus[player->getPlayerName()]){
+                    playersThatCanGo--;
+                }
+            }
+        }
+    }
 }
 
 void GameEngine::executeOrdersPhase(){

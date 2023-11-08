@@ -219,6 +219,7 @@ class GameEngine
         GameState* currentState;
         list<Player*> listOfPlayers;
         Map* map;
+        Deck* deck;
 
     public:
 

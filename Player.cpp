@@ -138,7 +138,7 @@ void Player::setTerritories(vector<Territory*> territories)
 
 
 /* Mandatory Features For A1 */
-void Player::issueOrder(Deck* deck, Map* map)
+bool Player::issueOrder(Deck* deck, Map* map)
 {
     
     if(this->reinforcementPool > 0){
@@ -310,15 +310,14 @@ void Player::issueOrder(Deck* deck, Map* map)
             }
             case 3:{
                 cout << "Ending your turn." << endl;
-                return;
+                return false;
             }
             default:{
                 throw exception("Invalid choice. Please try again.");
             }
         }
     }
-
-    return;
+    return true;
 }
 
 
