@@ -30,7 +30,7 @@ private:
     int y;
     Continent *continent;
     // Player p1;
-    // int numOfArmies
+    int* numOfArmies;
     // those attributes will be included in the next assignments since there are no obvious use of them.
 
 public:
@@ -40,6 +40,7 @@ public:
     string getNameOfTerritory();
     Continent* getContinent();
     string getTerritoryName();
+    int* getNumArmies();
     void pushATerritoryToAdj(Territory* T);
 };
 

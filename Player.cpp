@@ -138,13 +138,186 @@ void Player::setTerritories(vector<Territory*> territories)
 
 
 /* Mandatory Features For A1 */
-void Player::issueOrder()
+void Player::issueOrder(Deck* deck, Map* map)
 {
-    // for now: adds some arbitrary orders to the player's orderlist
-    // eventual functionality: creates an order object and add it to the list of orders
-    this->ordersList->addOrder(new Deploy());
-    this->ordersList->addOrder(new Bomb());
-    this->ordersList->addOrder(new Blockade());
+    
+    if(this->reinforcementPool > 0){
+        cout << this->playerName << ", it is your turn to issue an order. You still have reinforcements that must be deployed." << endl;
+        cout << "Which territory would you like to deploy them in?" << endl;
+        int counter = 0;
+
+        for(Territory* t : toDefend()){
+            cout << counter << ": " << t->getNameOfTerritory() << endl;
+            counter++;
+        }
+
+        int userTerritoryChoice;
+        cout << "Enter the number of the territory you would like to choose: ";
+        cin >> userTerritoryChoice;
+
+
+        Territory* territory = nullptr;
+
+        if(userTerritoryChoice >= 0 && userTerritoryChoice < toDefend().size()){    
+            territory = this->defend[userTerritoryChoice];
+        }
+        else{
+            cout << "Invalid choice. Please try again." << endl;
+        }
+
+        string deployedTerritoryName = territory->getNameOfTerritory();
+
+        int userTroopChoice;
+        cout << "How many troops would you like to deploy? You have " << this->reinforcementPool << " remaining in your reinforcement pool." << endl; 
+        
+        while(userTroopChoice > 0 && userTroopChoice <= *this->reinforcementPool)
+            cin >> userTroopChoice;
+        
+        auto* deploy = new Deploy(userTroopChoice, deployedTerritoryName);
+
+        this->ordersList->addOrder(deploy);
+
+        cout << "Troops deployed." << endl;
+
+        this->reinforcementPool -= userTroopChoice;
+    }
+    else{
+        cout << this->playerName << ", it is your turn to issue an order. What would you like to do?" << endl;
+        int userChoice;
+
+        list<int> options = list<int>(); 
+        
+        cout << "1. Advance" << endl;
+        options.push_back(1);
+
+        if(this->hand->getCardsInHand()->size() > 0){
+            cout << "2. Play a card" << endl;
+            options.push_back(2);
+        }
+
+        cout << "3. End your turn" << endl;
+        options.push_back(3);
+
+        if(std::find(options.begin(), options.end(), userChoice) != options.end()){
+            cin >> userChoice;
+        }
+        else{
+            cout << "Invalid choice. Please try again." << endl;
+        }
+
+        switch(userChoice){
+            // Advance
+            case 1:{
+                cout << "Select your troops from which territory?" << endl;
+                int counter = 0; 
+                
+                for(Territory* t : toDefend()){
+                    cout << counter << ": " << t->getNameOfTerritory() << endl;
+                    counter++;
+                }
+
+                int sourceTerritoryNumber;
+                cout << "Enter the number of the territory you would like to choose: ";
+                cin >> sourceTerritoryNumber;
+
+                Territory* sourceTerritory = nullptr;
+
+                if(sourceTerritoryNumber >= 0 && sourceTerritoryNumber < toDefend().size()){    
+                    sourceTerritory = this->defend[sourceTerritoryNumber];
+                }
+                else{
+                    cout << "Invalid choice. Please try again." << endl;
+                }
+
+                cout << "How many troops would you like to move? There are " << sourceTerritory->getNumArmies() << " troops in this territory." << endl;
+
+                int troopNumber;
+                while(troopNumber > 0 && troopNumber <= *sourceTerritory->getNumArmies()){
+                    cin >> troopNumber;
+                }
+
+                cout << "Which territory would you like to advance your targets to?" << endl;
+
+                vector<Territory*> combinedAttackDefend;
+                int counter2 = 0;
+
+                cout << "Territories you can attack: " << endl;
+                for(Territory* t : this->toAttack()){
+                    combinedAttackDefend.push_back(t);
+                    cout << counter2 << ": " << t->getNameOfTerritory() << endl;
+                    counter2++;
+                }
+
+                cout << "\n";
+
+                cout << "Territories you can defend: " << endl;
+                for(Territory* t : this->toDefend()){
+                    combinedAttackDefend.push_back(t);
+                    cout << counter2 << ": " << t->getNameOfTerritory() << endl;
+                    counter2++;
+                }
+
+                int targetTerritoryNumber;
+                cout << "Enter the number of the territory you would like to choose: ";
+                cin >> targetTerritoryNumber;
+
+                Territory* targetTerritory = nullptr;
+
+                if(targetTerritoryNumber >= 0 && targetTerritoryNumber < combinedAttackDefend.size()){
+                    targetTerritory = combinedAttackDefend[targetTerritoryNumber];
+                }
+                else{
+                    cout << "Invalid choice. Please try again.";
+                }
+
+                Advance* advanceOrder = new Advance(troopNumber, sourceTerritory->getNameOfTerritory(), targetTerritory->getNameOfTerritory());
+
+                this->ordersList->addOrder(advanceOrder);
+
+                cout << "Advance order made." << endl;
+                break;
+            }
+            // Card
+            case 2:{
+
+                cout << "Which card would you like to play?" << endl;
+                int counter = 0; 
+
+                auto& cardReference = *this->hand->getCardsInHand();
+
+                vector<Card*> cards(cardReference.begin(), cardReference.end());
+
+                for(Card* c : cards){
+                    cout << counter << ": " << c->cardTypeToString(c->getType()) << endl;
+                    counter++;
+                }
+
+                int userCardChoice;
+                cout << "Enter the number of the card you would like to play: ";
+                cin >> userCardChoice;
+
+                Card* userCard = nullptr;
+
+                if(userCardChoice > 0 && userCardChoice < cards.size()){
+                    userCard = cards[userCardChoice];
+                }
+
+                cout << "Playing the " << userCard->cardTypeToString(userCard->getType()) << " card." << endl;
+
+                userCard->play(deck, hand);
+
+                break;
+            }
+            case 3:{
+                cout << "Ending your turn." << endl;
+                return;
+            }
+            default:{
+                throw exception("Invalid choice. Please try again.");
+            }
+        }
+    }
+
     return;
 }
 

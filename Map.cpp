@@ -310,6 +310,10 @@ vector<Territory *> Territory::getAdjacentTerritory()
     return adjacentTerritory;
 }
 
+int* Territory::getNumArmies(){
+    return numOfArmies;
+}
+
 string Territory::getNameOfTerritory()
 {
     return nameOfTerritory;

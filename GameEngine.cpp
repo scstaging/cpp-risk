@@ -447,10 +447,10 @@ void GameEngine::mainGameLoop(){
                 winningPlayer = player->getPlayerName();
             } 
         }
-
-        cout<< "The winner is: " << winningPlayer << "!" << endl;
-
     };
+
+    cout<< "The winner is: " << winningPlayer << "!" << endl;
+
 
 }
 
@@ -500,6 +500,18 @@ void GameEngine::reinforcementsPhase(){
         //Adds reinforcements to the player's reinforcement pool. 
         player->incrementReinforcementPool(reinforcement);
     }
+}
+
+void GameEngine::issueOrdersPhase(){
+
+
+
+}
+
+void GameEngine::executeOrdersPhase(){
+
+
+    
 }
 
 /*

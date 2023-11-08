@@ -271,7 +271,7 @@ void Hand::removeCard(CardType& type) {
 
 // Returns the type of each card in the player's hand. 
 string Hand::getCards() const {
-	cout << "This hand has the following cards:\n";
+	cout << "Your hand has the following cards:\n";
 
 	string *result = new string("");
 

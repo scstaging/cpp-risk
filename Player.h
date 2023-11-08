@@ -41,7 +41,7 @@ class Player {
         void setTerritories(vector<Territory*> territories);
 
         /* Mandatory Features For A1 */
-        void issueOrder(); // creates an Order object and puts it in the player’s list of orders
+        void issueOrder(Deck* deck, Map* map); // creates an Order object and puts it in the player’s list of orders
         vector<Territory*> toAttack(); // returns a list of territories that are to be attacked (for now, arbitrary list)
         vector<Territory*> toDefend(); // returns a list of territories that are to be defended (for now, arbitrary list)
         
