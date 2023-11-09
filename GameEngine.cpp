@@ -532,7 +532,31 @@ void GameEngine::issueOrdersPhase(){
 }
 
 void GameEngine::executeOrdersPhase(){
+    int numFinishedPlayers = 0; 
 
+    std::map<string*, bool> playerOrderStatus;
+
+    for(Player* player : listOfPlayers){
+        playerOrderStatus[player->getPlayerName()] = true;
+    }
+
+    while(numFinishedPlayers != listOfPlayers.size()){
+        for(Player* player : listOfPlayers){
+
+            if(playerOrderStatus[player->getPlayerName()]){
+
+                list<Order*> playerOrderList = player->getOrdersList()->getOrders();
+
+                if(playerOrderList.empty()){
+                    numFinishedPlayers++;
+                    playerOrderStatus[player->getPlayerName()] = false;
+                }
+                else{
+                    playerOrderList.front()->execute();
+                }
+            } 
+        }
+    }
 
     
 }
