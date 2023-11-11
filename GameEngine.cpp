@@ -3,6 +3,7 @@ using namespace std;
 #include <typeinfo>
 #include <map>
 #include "GameEngine.h"
+#include "Player.h"
 
 // Defines each update function to handle transitions using the command
 // Control flow through available commands and handles accordingly
@@ -419,6 +420,10 @@ void GameEngine::update(std::string command)
     currentState->update(this, command);
 }
 
+list<Player*> GameEngine::getPlayers(){
+    return listOfPlayers;
+}
+
 void GameEngine::mainGameLoop(){
     bool gameOver = false;
     std::string* winningPlayer;
@@ -466,7 +471,7 @@ void GameEngine::reinforcementsPhase(){
         //Updates list of continents that player owns territories in. 
         for(Territory* t : player->getTerritories()){
             Continent* continent = t->getContinent();
-            auto& playerContinents = player->getContinents(); 
+            vector<Continent*> playerContinents = player->getContinents(); 
 
             auto it = std::find(playerContinents.begin(), playerContinents.end(), continent);
 
@@ -479,7 +484,7 @@ void GameEngine::reinforcementsPhase(){
         for(Continent* c : player->getContinents()){
             int ownedTerritories = 0; 
             const std::vector<Territory*>& continentTerritories = c->getContinentTerritories();
-            auto& playerTerritories = player->getTerritories();
+            vector<Territory*> playerTerritories = player->getTerritories();
 
             for(Territory* t : continentTerritories){
                 auto it = std::find(playerTerritories.begin(), playerTerritories.end(), t);
@@ -557,8 +562,41 @@ void GameEngine::executeOrdersPhase(){
             } 
         }
     }
+}
 
-    
+int testMainGameLoop(){
+
+    //Creating a test player
+    Player* testPlayer = new Player("Testington");
+
+    //Creating a test continent
+    Continent* testContinent = new Continent;
+
+    //Creating test territories
+    Territory* testTerritory1 = new Territory("Territory1", testContinent, 5, 5);
+    Territory* testTerritory2 = new Territory("Territory2", testContinent, 5, 5);
+    Territory* testTerritory3 = new Territory("Territory3", testContinent, 5, 5);
+
+    //Creating a vector that contains the player's territories
+    vector<Territory*> playerTerritories = testPlayer->getTerritories();
+
+    //Adding test territories to player
+    playerTerritories.push_back(testTerritory1);
+    playerTerritories.push_back(testTerritory2);
+    playerTerritories.push_back(testTerritory3);
+
+    //Creating test engine
+    GameEngine* testEngine = new GameEngine();
+
+    //Creating a list that contains the game engine's players
+    list<Player*> listOfPlayers = testEngine->getPlayers();
+
+    //Adding test player to game engine
+    listOfPlayers.push_back(testPlayer);
+
+    testEngine->reinforcementsPhase();
+
+    return 0;
 }
 
 /*

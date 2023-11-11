@@ -249,12 +249,19 @@ class GameEngine
         // Each transition applies it's own logic
         void setState(GameState& newState);
 
+        // Returns list of players
+        list<Player*> getPlayers();
+
+        // Triggers the main game loops 
         void mainGameLoop();
 
+        // Triggers the reinforcement phase in the main game loop
         void reinforcementsPhase();
 
+        // Triggers the issue orders phase in the main game loop
         void issueOrdersPhase();
 
+        // Triggers the execute orders phase in the main game loop
         void executeOrdersPhase();
 };
 

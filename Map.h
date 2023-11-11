@@ -6,6 +6,8 @@
 #include <vector>
 using namespace std;
 
+class Territory;
+
 class Continent
 {
 private:
