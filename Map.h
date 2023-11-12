@@ -20,7 +20,7 @@ public:
     Continent(string name, int bonus);
     string getNameOfContinent();
     int getControlBonus() const;
-    vector<Territory*> getContinentTerritories() const; 
+    vector<Territory*> getContinentTerritories() const;
 };
 
 class Territory

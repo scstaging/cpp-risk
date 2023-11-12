@@ -1,9 +1,13 @@
 #include <iostream>
 using namespace std;
 #include <typeinfo>
+#include <algorithm>
 #include <map>
 #include "GameEngine.h"
 #include "Player.h"
+#include "Map.h"
+#include "Cards.h"
+#include "Orders.h"
 
 // Defines each update function to handle transitions using the command
 // Control flow through available commands and handles accordingly
@@ -473,7 +477,8 @@ void GameEngine::reinforcementsPhase(){
             Continent* continent = t->getContinent();
             vector<Continent*> playerContinents = player->getContinents(); 
 
-            auto it = std::find(playerContinents.begin(), playerContinents.end(), continent);
+            auto it = find_if(playerContinents.begin(), playerContinents.end(), 
+                       [continent](const Continent* c) { return c == continent; });
 
             if(it == playerContinents.end()){
                 playerContinents.push_back(continent);
@@ -487,7 +492,8 @@ void GameEngine::reinforcementsPhase(){
             vector<Territory*> playerTerritories = player->getTerritories();
 
             for(Territory* t : continentTerritories){
-                auto it = std::find(playerTerritories.begin(), playerTerritories.end(), t);
+                auto it = find_if(playerTerritories.begin(), playerTerritories.end(),
+                       [t](const Territory* territory) { return territory == t; });
                 if(it != playerTerritories.end()){
                     ownedTerritories++;
                 }
@@ -564,7 +570,7 @@ void GameEngine::executeOrdersPhase(){
     }
 }
 
-int testMainGameLoop(){
+int main(){
 
     //Creating a test player
     Player* testPlayer = new Player("Testington");
