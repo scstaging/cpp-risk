@@ -570,41 +570,6 @@ void GameEngine::executeOrdersPhase(){
     }
 }
 
-int main(){
-
-    //Creating a test player
-    Player* testPlayer = new Player("Testington");
-
-    //Creating a test continent
-    Continent* testContinent = new Continent;
-
-    //Creating test territories
-    Territory* testTerritory1 = new Territory("Territory1", testContinent, 5, 5);
-    Territory* testTerritory2 = new Territory("Territory2", testContinent, 5, 5);
-    Territory* testTerritory3 = new Territory("Territory3", testContinent, 5, 5);
-
-    //Creating a vector that contains the player's territories
-    vector<Territory*> playerTerritories = testPlayer->getTerritories();
-
-    //Adding test territories to player
-    playerTerritories.push_back(testTerritory1);
-    playerTerritories.push_back(testTerritory2);
-    playerTerritories.push_back(testTerritory3);
-
-    //Creating test engine
-    GameEngine* testEngine = new GameEngine();
-
-    //Creating a list that contains the game engine's players
-    list<Player*> listOfPlayers = testEngine->getPlayers();
-
-    //Adding test player to game engine
-    listOfPlayers.push_back(testPlayer);
-
-    testEngine->reinforcementsPhase();
-
-    return 0;
-}
-
 /*
     References: 
 

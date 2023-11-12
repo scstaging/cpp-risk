@@ -1,1 +1,3 @@
 void testGameStates();
+
+int testMainGameLoop();

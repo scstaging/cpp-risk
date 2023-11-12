@@ -141,7 +141,7 @@ void Player::setTerritories(vector<Territory*> territories)
 bool Player::issueOrder(Deck* deck, Map* map)
 {
     
-    if(this->reinforcementPool > 0){
+    if(*this->reinforcementPool > 0){
         cout << this->playerName << ", it is your turn to issue an order. You still have reinforcements that must be deployed." << endl;
         cout << "Which territory would you like to deploy them in?" << endl;
         int counter = 0;
@@ -198,11 +198,9 @@ bool Player::issueOrder(Deck* deck, Map* map)
         cout << "3. End your turn" << endl;
         options.push_back(3);
 
-        if(std::find(options.begin(), options.end(), userChoice) != options.end()){
+        while (std::find_if(options.begin(), options.end(),
+            [userChoice](const auto& option) { return option == userChoice; }) != options.end()) {
             cin >> userChoice;
-        }
-        else{
-            cout << "Invalid choice. Please try again." << endl;
         }
 
         switch(userChoice){
