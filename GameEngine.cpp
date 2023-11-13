@@ -446,6 +446,51 @@ list<Player*> GameEngine::getPlayers(){
     return listOfPlayers;
 }
 
+
+void GameEngine::startupPhase(){
+    string command;
+    cout << "Enter a command: " << endl;
+    cin >> command;
+
+    /*if(command == "gameStart"){
+        Deck* deck = new Deck();
+        vector<Territory*> mapTerritories = map.getTerritory();
+        //Distribute territories equally amonst all players
+        int* playerTurn = 0;
+        for(int i = 0, i < mapTerritories.size(); i++){
+            vector<Territory*> playerTerritories = listOfPlayers[playerTurn].getTerritories();
+            playerTerritories.push_back(mapTerritories[i]);
+            playerTurn++
+            if(playerTurn > listOfPlayers.size()){
+                playerTurn = 1;
+            }
+        }
+
+        //Create a list containing all players in the game into playOrder
+
+        list<Player*> playOrder;
+        for(int i = 0; i < listOfPlayers.size(); i++){
+            playOrder.push_back(listOfPlayers[i]);
+        }
+
+        //Randomize list of players and let them play in that order
+        playerOrder.randomize()
+
+        for(int i = 0; i < playerOrder.size(); i++){
+            Hand* playerHand = playerOrder[i].getHand();
+            playerOrder[i].incrementReinforcementPool(50);
+            deck.draw(playerHand);
+            deck.draw(PlayerHand);
+        }
+
+        setPhase(play);
+
+    }*/
+
+
+
+}
+
 void GameEngine::mainGameLoop(){
     bool gameOver = false;
     std::string* winningPlayer;
@@ -549,7 +594,7 @@ void GameEngine::issueOrdersPhase(){
         for(Player* player : listOfPlayers){
             if(playerStatus[player->getPlayerName()]){
                 //issueOrder function will return "true" if turn is not ended, and "false" if it is
-                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map);
+                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map, this);
                 
                 //if issueOrder function returns "false", means player has ended their turn. Decrements # of players that can go
                 if(!playerStatus[player->getPlayerName()]){
@@ -588,39 +633,36 @@ void GameEngine::executeOrdersPhase(){
     }
 }
 
-int main(){
+// features for the order execution to verify if players negociated
+void GameEngine::addNegotiation(Player *player1, Player *player2)
+{
+    activeNegotiations.insert(std::make_pair(player1, player2));
+}
 
-    //Creating a test player
-    Player* testPlayer = new Player("Testington");
+void GameEngine::clearNegotiations()
+{
+    activeNegotiations.clear();
+}
 
-    //Creating a test continent
-    Continent* testContinent = new Continent;
+bool GameEngine::isUnderNegotiation(Player *player1, Player *player2)
+{
+    return activeNegotiations.find(std::make_pair(player1, player2)) != activeNegotiations.end();
+}
 
-    //Creating test territories
-    Territory* testTerritory1 = new Territory("Territory1", testContinent, 5, 5);
-    Territory* testTerritory2 = new Territory("Territory2", testContinent, 5, 5);
-    Territory* testTerritory3 = new Territory("Territory3", testContinent, 5, 5);
-
-    //Creating a vector that contains the player's territories
-    vector<Territory*> playerTerritories = testPlayer->getTerritories();
-
-    //Adding test territories to player
-    playerTerritories.push_back(testTerritory1);
-    playerTerritories.push_back(testTerritory2);
-    playerTerritories.push_back(testTerritory3);
-
-    //Creating test engine
-    GameEngine* testEngine = new GameEngine();
-
-    //Creating a list that contains the game engine's players
-    list<Player*> listOfPlayers = testEngine->getPlayers();
-
-    //Adding test player to game engine
-    listOfPlayers.push_back(testPlayer);
-
-    testEngine->reinforcementsPhase();
-
-    return 0;
+// determine the owner of a territory
+Player *GameEngine::getOwnerOfTerritory(Territory *territory)
+{
+    for (Player *player : listOfPlayers)
+    { // Assuming listOfPlayers is a list of all players
+        for (Territory *ownedTerritory : player->getTerritories())
+        {
+            if (ownedTerritory == territory)
+            {
+                return player;
+            }
+        }
+    }
+    return nullptr; // No player owns the territory
 }
 
 /*

@@ -3,6 +3,8 @@
 #include <string>
 #include "Player.h"
 #include "LoggingObserver.h"
+#include <set>
+#include <utility>
 
 class GameEngine;
 // State Template Class
@@ -221,6 +223,8 @@ class GameEngine : Subject, ILoggable
         list<Player*> listOfPlayers;
         Map* map;
         Deck* deck;
+        std::set<std::pair<Player *, Player *>> activeNegotiations;
+
 
     public:
 
@@ -253,6 +257,11 @@ class GameEngine : Subject, ILoggable
         // Returns list of players
         list<Player*> getPlayers();
 
+        void gameStart();
+
+        // Triggers the startup phase of the game
+        void startupPhase();
+
         // Triggers the main game loops 
         void mainGameLoop();
 
@@ -270,6 +279,15 @@ class GameEngine : Subject, ILoggable
         void Detach(Observer* o);
         void Notify();
         void stringToLog();
+        
+
+        // features for the order execution to verify if players negociated
+        void addNegotiation(Player *player1, Player *player2);
+        void clearNegotiations();
+        bool isUnderNegotiation(Player *player1, Player *player2);
+        
+        // determine the owner of a territory
+        Player* getOwnerOfTerritory(Territory* territory);
 };
 
 /*
