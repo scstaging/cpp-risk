@@ -14,6 +14,7 @@ using std::string;
 class OrdersList;
 class Map;
 class Territory;
+class GameEngine;
 
 class Player {
     public:
