@@ -47,7 +47,7 @@ private:
     int numOfArmies;
 
 public:
-    Deploy(Player *player, std::string targetTerritoryName, GameEngine *game, int numOfArmies); // Parameterized constructor declaration
+    Deploy(Player *player, std::string targetTerritoryName, int numOfArmies); // Parameterized constructor declaration
     // Other members and methods...
     ~Deploy(); // Destructor
     bool validate() override;
