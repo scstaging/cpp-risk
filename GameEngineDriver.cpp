@@ -98,7 +98,7 @@ int testMainGameLoop(){
     listOfPlayers.push_back(testPlayer2);
     listOfPlayers.push_back(testPlayer3);
 
-    testEngine->reinforcementsPhase();
+    testEngine->mainGameLoop();
 
     return 0;
 }

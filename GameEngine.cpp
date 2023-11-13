@@ -428,6 +428,51 @@ list<Player*> GameEngine::getPlayers(){
     return listOfPlayers;
 }
 
+
+void GameEngine::startupPhase(){
+    string command;
+    cout << "Enter a command: " << endl;
+    cin >> command;
+
+    /*if(command == "gameStart"){
+        Deck* deck = new Deck();
+        vector<Territory*> mapTerritories = map.getTerritory();
+        //Distribute territories equally amonst all players
+        int* playerTurn = 0;
+        for(int i = 0, i < mapTerritories.size(); i++){
+            vector<Territory*> playerTerritories = listOfPlayers[playerTurn].getTerritories();
+            playerTerritories.push_back(mapTerritories[i]);
+            playerTurn++
+            if(playerTurn > listOfPlayers.size()){
+                playerTurn = 1;
+            }
+        }
+
+        //Create a list containing all players in the game into playOrder
+
+        list<Player*> playOrder;
+        for(int i = 0; i < listOfPlayers.size(); i++){
+            playOrder.push_back(listOfPlayers[i]);
+        }
+
+        //Randomize list of players and let them play in that order
+        playerOrder.randomize()
+
+        for(int i = 0; i < playerOrder.size(); i++){
+            Hand* playerHand = playerOrder[i].getHand();
+            playerOrder[i].incrementReinforcementPool(50);
+            deck.draw(playerHand);
+            deck.draw(PlayerHand);
+        }
+
+        setPhase(play);
+
+    }*/
+
+
+
+}
+
 void GameEngine::mainGameLoop(){
     bool gameOver = false;
     std::string* winningPlayer;

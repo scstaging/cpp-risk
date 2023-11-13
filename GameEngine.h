@@ -252,6 +252,11 @@ class GameEngine
         // Returns list of players
         list<Player*> getPlayers();
 
+        void gameStart();
+
+        // Triggers the startup phase of the game
+        void startupPhase();
+
         // Triggers the main game loops 
         void mainGameLoop();
 
