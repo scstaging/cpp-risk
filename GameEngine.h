@@ -7,6 +7,8 @@
 #include <utility>
 
 class GameEngine;
+class Player;
+
 // State Template Class
 class GameState
 {
