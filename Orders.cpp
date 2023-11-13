@@ -46,8 +46,8 @@ std::ostream &operator<<(std::ostream &out, const Order &order)
 
 // Parameterized constructor
 
-Deploy::Deploy(Player *player, std::string targetTerritoryName, GameEngine *game, int numOfArmies)
-    : player(player), targetTerritoryName(targetTerritoryName), game(game), numOfArmies(numOfArmies), territory(nullptr)
+Deploy::Deploy(Player *player, std::string targetTerritoryName, int numOfArmies)
+    : player(player), targetTerritoryName(targetTerritoryName), numOfArmies(numOfArmies), territory(nullptr)
 {
     description = "Deploy Order";
 }
@@ -59,7 +59,6 @@ Deploy::Deploy(const Deploy &other)
     : Order(other),
       player(other.player),
       targetTerritoryName(other.targetTerritoryName),
-      game(other.game),
       numOfArmies(other.numOfArmies),
       territory(other.territory) {}
 
@@ -92,7 +91,6 @@ Deploy &Deploy::operator=(const Deploy &other)
         Order::operator=(other); // Call base class assignment operator
         player = other.player;
         targetTerritoryName = other.targetTerritoryName;
-        game = other.game;
         numOfArmies = other.numOfArmies;
         territory = other.territory;
     }
