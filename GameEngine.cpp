@@ -576,7 +576,7 @@ void GameEngine::issueOrdersPhase(){
         for(Player* player : listOfPlayers){
             if(playerStatus[player->getPlayerName()]){
                 //issueOrder function will return "true" if turn is not ended, and "false" if it is
-                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map);
+                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map, this);
                 
                 //if issueOrder function returns "false", means player has ended their turn. Decrements # of players that can go
                 if(!playerStatus[player->getPlayerName()]){
@@ -613,6 +613,38 @@ void GameEngine::executeOrdersPhase(){
             } 
         }
     }
+}
+
+// features for the order execution to verify if players negociated
+void GameEngine::addNegotiation(Player *player1, Player *player2)
+{
+    activeNegotiations.insert(std::make_pair(player1, player2));
+}
+
+void GameEngine::clearNegotiations()
+{
+    activeNegotiations.clear();
+}
+
+bool GameEngine::isUnderNegotiation(Player *player1, Player *player2)
+{
+    return activeNegotiations.find(std::make_pair(player1, player2)) != activeNegotiations.end();
+}
+
+// determine the owner of a territory
+Player *GameEngine::getOwnerOfTerritory(Territory *territory)
+{
+    for (Player *player : listOfPlayers)
+    { // Assuming listOfPlayers is a list of all players
+        for (Territory *ownedTerritory : player->getTerritories())
+        {
+            if (ownedTerritory == territory)
+            {
+                return player;
+            }
+        }
+    }
+    return nullptr; // No player owns the territory
 }
 
 /*
