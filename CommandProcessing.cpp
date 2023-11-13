@@ -49,6 +49,12 @@ Command::Command(commandType command, string addition)
 // Copy constructor
 Command::Command(const Command &command) : commandStr(command.commandStr), effect(command.effect), addition(command.addition), commandNumber(command.commandNumber) {}
 
+// Logging Observer Override
+std::string Command::stringToLog() 
+{
+    return this->commandStr;
+}
+
 // Overloading the assignment operator
 Command &Command::operator=(const Command &command)
 {
@@ -160,6 +166,12 @@ CommandProcessor &CommandProcessor::operator=(const CommandProcessor &cmdPro)
 	this->cmdProPause = cmdPro.cmdProPause;
 
 	return *this;
+}
+
+// Logging Observer Overrride
+std::string CommandProcessor::stringToLog()
+{
+	// Logic
 }
 
 // Destructor for CommandProcessor
@@ -287,6 +299,9 @@ bool CommandProcessor::validate(Command *command, GameEngine *game)
 void CommandProcessor::saveCommand(Command *command)
 {
 	commandList.push_back(command);
+
+	// Logging Observer Notify Call
+	Notify();
 }
 
 // Saves the command in the valid command list

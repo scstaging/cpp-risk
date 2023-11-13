@@ -215,7 +215,7 @@ class Win : public GameState
 };
 
 // Game Engine Class
-class GameEngine : Subject, ILoggable
+class GameEngine : public Subject
 {
     private:
         // Stores pointer to current state
@@ -238,6 +238,9 @@ class GameEngine : Subject, ILoggable
         GameEngine& operator=(const GameEngine& other);
         // Stream Insertion Overload
         std::istream& operator >> (std::istream &in);
+
+        // Logging Observer Overrride
+        std::string stringToLog();
 
         // Returns current state
         std::string getCurrentState();
@@ -273,13 +276,6 @@ class GameEngine : Subject, ILoggable
 
         // Triggers the execute orders phase in the main game loop
         void executeOrdersPhase();
-
-        // Observer Methods
-        void Attach(Observer* o);
-        void Detach(Observer* o);
-        void Notify();
-        void stringToLog();
-        
 
         // features for the order execution to verify if players negociated
         void addNegotiation(Player *player1, Player *player2);

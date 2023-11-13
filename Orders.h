@@ -8,6 +8,7 @@
 #include <string>
 #include <list>
 #include <iostream>
+#include "LoggingObserver.h"
 
 // Forward declaration
 class OrdersList;
@@ -15,7 +16,7 @@ class Player;
 class GameEngine;
 
 // Base Order class
-class Order
+class Order : public Subject
 {
 protected:
     std::string description;
@@ -35,6 +36,9 @@ public:
     // Copy constructor and assignment operator
     Order(const Order &other);
     Order &operator=(const Order &other);
+
+    // Logging Observer Overrride
+    std::string stringToLog();
 };
 
 // Subclasses for each order type
@@ -176,7 +180,7 @@ public:
     Negotiate &operator=(const Negotiate &other);                                   // Assignment operator
 };
 
-class OrdersList
+class OrdersList : public Subject
 {
 private:
     std::list<Order *> orders;
@@ -200,6 +204,9 @@ public:
     friend std::ostream &operator<<(std::ostream &out, const OrdersList &ordersList);
     OrdersList(const OrdersList &other);
     OrdersList &operator=(const OrdersList &other);
+
+    // Logging Observer Overrride
+    std::string logToString();
 };
 
 #endif // ORDERS_H

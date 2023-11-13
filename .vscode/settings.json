@@ -1,7 +1,7 @@
 {
   "files.associations": {
-    "*html": "html",
     "*.embeddedhtml": "html",
+    "*html": "html",
     "new": "cpp",
     "ostream": "cpp",
     "array": "cpp",
@@ -61,6 +61,10 @@
     "xstddef": "cpp",
     "xtr1common": "cpp",
     "xtree": "cpp",
-    "xutility": "cpp"
+    "xutility": "cpp",
+    "set": "cpp",
+    "optional": "cpp",
+    "string_view": "cpp",
+    "numbers": "cpp"
   }
 }

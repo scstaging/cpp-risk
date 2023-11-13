@@ -18,24 +18,6 @@ using namespace std;
 
 const int GameEngine::MINIMUM_NUMBER_OF_REINFORCEMENTS = 3;
 
-// Observer Method Overloads
-void GameEngine::Attach(Observer* o)
-{
-    
-}
-void GameEngine::Detach(Observer* o)
-{
-
-}
-void GameEngine::Notify() 
-{
-
-}
-void GameEngine::stringToLog()
-{
-
-}
-
 // Default constructor
 Start::Start() 
 { 
@@ -440,7 +422,16 @@ void GameEngine::update(std::string command)
 {
     // Game engine update applies unique state's update logic
     currentState->update(this, command);
+
+    // Logging Observer Overrride
+    Notify();
 }
+
+ // Logging Observer Overrride
+ std::string GameEngine::stringToLog()
+ {
+    return this->getCurrentState();
+ }
 
 list<Player*> GameEngine::getPlayers(){
     return listOfPlayers;

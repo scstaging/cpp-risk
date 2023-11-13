@@ -2,11 +2,12 @@
 #include <string>
 #include <vector>
 #include "GameEngine.h"
+#include "LoggingObserver.h"
 
 using namespace std;
 
 // Command class - object containing the information the user has written
-class Command
+class Command : public Subject
 {
 public:
     enum class commandType
@@ -28,6 +29,9 @@ public:
     void setCommandStr();
     string getEffect();
     string getAddition();
+    
+    // Logging Observer
+    string stringToLog();
 
     // stringToLog Implementation for ILoggable
     // string stringToLog();
@@ -46,7 +50,7 @@ private:
 };
 
 // CommandProcessor class - reads the console
-class CommandProcessor 
+class CommandProcessor : public Subject
 {
 public:
     CommandProcessor();
@@ -64,6 +68,9 @@ public:
     bool getExitProgram();
     void setcmdProPause(bool);
     bool getcmdProPause();
+
+    // Logging Observer Overrride
+    std::string stringToLog();
 
     // stringToLog Implementation for ILoggable
 

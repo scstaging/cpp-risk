@@ -25,6 +25,12 @@ Order &Order::operator=(const Order &other)
     return *this;
 }
 
+// Logging Observer Overrride
+std::string Order::stringToLog()
+{
+    // Logic
+}
+
 // Print method useful for the stream insertion operator
 void Order::print(std::ostream &out) const
 {
@@ -888,6 +894,11 @@ OrdersList::~OrdersList()
     orders.clear();
 }
 
+std::string OrdersList::logToString()
+{
+    // Logic
+}
+
 // Getter method to return the pointer to an order inside the list
 const std::list<Order *> &OrdersList::getOrders() const
 {
@@ -898,6 +909,9 @@ const std::list<Order *> &OrdersList::getOrders() const
 void OrdersList::addOrder(Order *order)
 {
     orders.push_back(order);
+
+    // Logging Observer Notify
+    Notify();
 }
 
 void OrdersList::remove(int index)
