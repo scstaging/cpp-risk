@@ -138,7 +138,7 @@ void Player::setTerritories(vector<Territory*> territories)
 
 
 /* Mandatory Features For A1 */
-bool Player::issueOrder(Deck* deck, Map* map)
+bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
 {
     
     if(*this->reinforcementPool > 0){
