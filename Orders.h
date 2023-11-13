@@ -4,13 +4,14 @@
 #include "Player.h"
 #include "Cards.h"
 #include "Map.h"
+#include "LoggingObserver.h"
 
 #include <string>
 #include <list>
 #include <iostream>
 
 // Forward declaration
-class OrdersList;
+class OrdersList : Subject, ILoggable {};
 
 // Base Order class
 class Order {

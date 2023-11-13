@@ -18,6 +18,24 @@ using namespace std;
 
 const int GameEngine::MINIMUM_NUMBER_OF_REINFORCEMENTS = 3;
 
+// Observer Method Overloads
+void GameEngine::Attach(Observer* o)
+{
+    
+}
+void GameEngine::Detach(Observer* o)
+{
+
+}
+void GameEngine::Notify() 
+{
+
+}
+void GameEngine::stringToLog()
+{
+
+}
+
 // Default constructor
 Start::Start() 
 { 

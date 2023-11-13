@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include "Player.h"
+#include "LoggingObserver.h"
 
 class GameEngine;
 // State Template Class
@@ -212,7 +213,7 @@ class Win : public GameState
 };
 
 // Game Engine Class
-class GameEngine
+class GameEngine : Subject, ILoggable
 {
     private:
         // Stores pointer to current state
@@ -263,6 +264,12 @@ class GameEngine
 
         // Triggers the execute orders phase in the main game loop
         void executeOrdersPhase();
+
+        // Observer Methods
+        void Attach(Observer* o);
+        void Detach(Observer* o);
+        void Notify();
+        void stringToLog();
 };
 
 /*
