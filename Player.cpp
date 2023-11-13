@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "Cards.h"
-
+#include <stdexcept>
 #include <iostream>
 #include <vector>
 
@@ -173,7 +173,8 @@ bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
         while(userTroopChoice > 0 && userTroopChoice <= *this->reinforcementPool)
             cin >> userTroopChoice;
         
-        auto* deploy = new Deploy(userTroopChoice, deployedTerritoryName);
+	Deploy *deploy = new Deploy(this, deployedTerritoryName, userTroopChoice); // Updated to match the new Deploy constructor
+	    
 
         this->ordersList->addOrder(deploy);
 
@@ -268,7 +269,7 @@ bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
                     cout << "Invalid choice. Please try again.";
                 }
 
-                Advance* advanceOrder = new Advance(troopNumber, sourceTerritory->getNameOfTerritory(), targetTerritory->getNameOfTerritory());
+		Advance *advanceOrder = new Advance(this, sourceTerritory->getNameOfTerritory(), targetTerritory->getNameOfTerritory(), game, troopNumber);
 
                 this->ordersList->addOrder(advanceOrder);
 
@@ -283,7 +284,12 @@ bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
 
                 auto& cardReference = *this->hand->getCardsInHand();
 
-                vector<Card*> cards(cardReference.begin(), cardReference.end());
+
+		vector<Card *> cards;
+            	for (Card &card : cardReference)
+            	{
+                	cards.push_back(&card);
+            	}
 
                 for(Card* c : cards){
                     cout << counter << ": " << c->cardTypeToString(c->getType()) << endl;
@@ -311,7 +317,8 @@ bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
                 return false;
             }
             default:{
-                throw exception("Invalid choice. Please try again.");
+                //throw exception("Invalid choice. Please try again.");
+		throw std::runtime_error("Invalid choice. Please try again.");
             }
         }
     }
