@@ -11,6 +11,8 @@
 
 // Forward declaration
 class OrdersList;
+class Player;
+class GameEngine;
 
 // Base Order class
 class Order
