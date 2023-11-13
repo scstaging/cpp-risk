@@ -49,6 +49,7 @@ GameEngine *game = new GameEngine();
     delete game;
 }
 void testOrdersLists() {
+    /*
 
     // Create an OrdersList object
     OrdersList ordersList;
@@ -98,13 +99,13 @@ void testOrdersLists() {
     ordersList.remove(0);  // Remove the order at index 0 (which is the Bomb order after the move operation)
     std::cout << ordersList << std::endl;
 
-    
+    */
 
   
 }
 /*
 int main() {
     testOrderExecution();
-    testOrdersLists();
+    //testOrdersLists();
     return 0;
 }*/
