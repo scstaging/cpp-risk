@@ -39,8 +39,8 @@ GameEngine* engine = new GameEngine();
     engine = NULL;
 }
 
-// int main() {
-//     testGameStates();
+int main() {
+    testGameStates();
 
-//     return 0;
-// };
+    return 0;
+};

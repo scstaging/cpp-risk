@@ -349,3 +349,8 @@ int Continent::getControlBonus() const
 {
     return controlBonus;
 }
+
+vector<Territory *> Continent::getContinentTerritories() const
+{
+    return continentTerritories;
+}
