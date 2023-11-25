@@ -35,6 +35,8 @@ class Player {
         void incrementReinforcementPool(int increase); 
         vector<Continent*> getContinents() const;
         vector<Territory*> getTerritories() const;
+        vector<Territory*> getDefend() const;
+        vector<Territory*> getAttack() const;
 
         /* Setters */
         void setPlayerName(string name);
