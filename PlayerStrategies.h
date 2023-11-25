@@ -12,7 +12,7 @@ class PlayerStrategy {
     PlayerStrategy();
     virtual ~PlayerStrategy();
 
-    virtual bool issueOrder(Deck* deck, Map* map, GameEngine *game);
+    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
     virtual vector<Territory*> toDefend(Player *player) = 0;
     virtual vector<Territory*> toAttack(Player *player) = 0;
 };
@@ -22,7 +22,7 @@ class PlayerStrategy {
  * 
  */
 class HumanPlayerStrategy : public PlayerStrategy{
-    virtual bool issueOrder(Deck* deck, Map* map, GameEngine *game);
+    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
     virtual vector<Territory*> toDefend(Player *player) = 0;
     virtual vector<Territory*> toAttack(Player *player) = 0;
 
@@ -41,7 +41,7 @@ class AggressivePlayerStrategy: public PlayerStrategy{
 
     Territory* getStrongestTerritory();
     void setStrongestTerritory(Player* player);
-    virtual bool issueOrder(Deck* deck, Map* map, GameEngine *game);
+    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
     virtual vector<Territory*> toDefend(Player *player) = 0;
     virtual vector<Territory*> toAttack(Player *player) = 0;
 
@@ -60,7 +60,7 @@ class BenevolentPlayerStrategy: public PlayerStrategy{
 
     Territory* getWeakestTerritory();
     void setWeakestTerritory(Player* player);
-    virtual bool issueOrder(Deck* deck, Map* map, GameEngine *game);
+    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
     virtual vector<Territory*> toDefend(Player *player) = 0;
     virtual vector<Territory*> toAttack(Player *player) = 0;
 
@@ -77,7 +77,7 @@ class NeutralPlayerStrategy: public PlayerStrategy{
 
     public:
 
-    virtual bool issueOrder(Deck* deck, Map* map, GameEngine *game);
+    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
     virtual vector<Territory*> toDefend(Player *player) = 0;
     virtual vector<Territory*> toAttack(Player *player) = 0;
 
@@ -88,7 +88,7 @@ class NeutralPlayerStrategy: public PlayerStrategy{
  * 
  */
 class CheaterPlayerStrategy: public PlayerStrategy{
-    virtual bool issueOrder(Deck* deck, Map* map, GameEngine *game);
+    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
     virtual vector<Territory*> toDefend(Player *player) = 0;
     virtual vector<Territory*> toAttack(Player *player) = 0;
 };

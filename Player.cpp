@@ -106,6 +106,16 @@ vector<Territory*> Player::getTerritories() const
     return this->territories;
 }
 
+vector<Territory*> Player::getDefend() const
+{
+    return this->defend;
+}
+
+vector<Territory*> Player::getAttack() const
+{
+    return this->attack;
+}
+
 
 /* Setters */
 void Player::setPlayerName(string name) 
@@ -330,7 +340,6 @@ bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
 vector<Territory*> Player::toAttack() 
 {
     // return arbitrary (for now) list of territories that are to be attacked
-    cout << "To attack:\n";
     for (unsigned int i = 0; i < this->attack.size(); i++) {
         cout << this->attack[i]->getNameOfTerritory() << "\n";
     }
