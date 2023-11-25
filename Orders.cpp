@@ -14,6 +14,11 @@ Order::~Order() {}
 // copy constructor
 Order::Order(const Order &other) : description(other.description), effect(other.effect) {}
 
+std::string Order::stringToLog()
+{
+    return "Order Template";
+}
+
 // Assignment operator of the base class order
 Order &Order::operator=(const Order &other)
 {
@@ -23,12 +28,6 @@ Order &Order::operator=(const Order &other)
         effect = other.effect;
     }
     return *this;
-}
-
-// Logging Observer Overrride
-std::string Order::stringToLog()
-{
-    // Logic
 }
 
 // Print method useful for the stream insertion operator
@@ -346,11 +345,15 @@ void Advance::execute()
                     vector<Territory *> attackerTerritories = player->getTerritories();
 
                     // Remove territory from defender
-                    auto it = std::remove(defenderTerritories.begin(), defenderTerritories.end(), trgtTerritory);
-                    if (it != defenderTerritories.end())
+
+                    // Iterates through defender territories and removes attacked territory
+                    for (int i = 0; i < defenderTerritories.size(); i++)
                     {
-                        defenderTerritories.erase(it);
-                        defender->setTerritories(defenderTerritories);
+                        if (trgtTerritory->getTerritoryName() == defenderTerritories[i]->getNameOfTerritory())
+                        {
+                            defenderTerritories.erase(defenderTerritories.begin() + i);
+                            defender->setTerritories(defenderTerritories);
+                        }
                     }
 
                     // Add territory to attacker
@@ -626,8 +629,11 @@ void Blockade::execute()
         *(trgtTerritory->getNumArmies()) *= 2;
         // Remove the territory from the list of owned territories by the owner
         vector<Territory *> currentPlayerTerritories = player->getTerritories();
-        currentPlayerTerritories.erase(remove(currentPlayerTerritories.begin(), currentPlayerTerritories.end(), trgtTerritory),
-                                       currentPlayerTerritories.end());
+        for (int i = 0; i < currentPlayerTerritories.size(); i++)
+        {
+            if (trgtTerritory->getNameOfTerritory() == currentPlayerTerritories[i]->getNameOfTerritory())
+                currentPlayerTerritories.erase(currentPlayerTerritories.begin() + i);
+        }
         player->setTerritories(currentPlayerTerritories);
 
         effect = "Blockade executed on " + targetTerritory;
@@ -894,9 +900,9 @@ OrdersList::~OrdersList()
     orders.clear();
 }
 
-std::string OrdersList::logToString()
+std::string OrdersList::stringToLog()
 {
-    // Logic
+    return "Blank Template";
 }
 
 // Getter method to return the pointer to an order inside the list

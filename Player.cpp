@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 using std::istream;
 using std::ostream;
@@ -199,7 +200,7 @@ bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
         cout << "3. End your turn" << endl;
         options.push_back(3);
 
-        while (std::find_if(options.begin(), options.end(),
+        while (find_if(options.begin(), options.end(),
             [userChoice](const auto& option) { return option == userChoice; }) != options.end()) {
             cin >> userChoice;
         }
