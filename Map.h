@@ -32,6 +32,7 @@ private:
     int x;
     int y;
     Continent *continent;
+    Player* ownerPlayer;
     // Player p1;
     int* numOfArmies;
     // those attributes will be included in the next assignments since there are no obvious use of them.
@@ -43,6 +44,8 @@ public:
     string getNameOfTerritory();
     Continent* getContinent();
     string getTerritoryName();
+    string* getOwnerPlayerName();
+    void setOwnerPlayer(Player* player);
     int* getNumArmies();
     void pushATerritoryToAdj(Territory* T);
 };

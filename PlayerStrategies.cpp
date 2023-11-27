@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <random>
 #include "Player.h"
 #include "PlayerStrategies.h"
 #include "Orders.h"
@@ -210,14 +211,164 @@ vector<Territory*> HumanPlayerStrategy::toAttack(Player* player){
 
 vector<Territory*> HumanPlayerStrategy::toDefend(Player* player){
 
-    vector<Territory*> territoriestoDefend = player->getDefend();
+    return player->getTerritories();
+}
 
-    for (unsigned int i = 0; i < territoriestoDefend.size(); i++) {
-        cout << territoriestoDefend[i]->getNameOfTerritory() << "\n";
+// AggressivePlayerStrategy Class
+
+Territory* AggressivePlayerStrategy::getStrongestTerritory(){
+    return strongestTerritory;
+}
+
+void AggressivePlayerStrategy::setStrongestTerritory(Player* player){
+    this->strongestTerritory = player->getTerritories()[0];
+    for(int i = 0; i < player->getTerritories().size(); i++){
+        if(player->getTerritories()[i]->getNumArmies() > strongestTerritory->getNumArmies()){
+            this->strongestTerritory = player->getTerritories()[i];
+        }
+    }
+}
+
+bool AggressivePlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game){
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    bool advance;
+
+    //Will automatically deploy a random number of troops into the strongest territory
+    if(*player->getReinforcementPool() > 0){
+        
+        std::uniform_int_distribution<int> distribution(1, *player->getReinforcementPool());
+        
+        int aggTroopChoice = distribution(mt);
+	    
+        Deploy *deploy = new Deploy(player, strongestTerritory->getNameOfTerritory(), aggTroopChoice); // Updated to match the new Deploy constructor
+	    
+        player->getOrdersList()->addOrder(deploy);
+
+        cout << "AggressivePlayer Troops deployed." << endl;
+        
+        advance = true;
+
+        *player->getReinforcementPool() -= aggTroopChoice;
+    }
+    else{
+        int aggChoice;
+
+        list<int> options = list<int>(); 
+        
+        //Option to advance
+        if(advance){
+            options.push_back(1);
+        }
+
+        //Option to play a card
+        if(player->getHand()->getCardsInHand()->size() > 0){
+            options.push_back(2);
+        }
+
+        //Option to end turn
+        options.push_back(3);
+
+        std::uniform_int_distribution<int> distribution(1, options.size() - 1);
+
+        //Chooses random number corresponding to action from the options list
+        aggChoice = distribution(mt);
+
+        switch(aggChoice){
+            // Advance
+            case 1:{
+
+                int sourceTerritoryNumber;
+
+                Territory* sourceTerritory = nullptr;
+
+                vector<Territory*> defendedTerritories = player->getDefend();
+
+                for(int i = 0; i < defendedTerritories.size(); i++){
+                    if(defendedTerritories[i]->getNumArmies() > 0){
+                        vector<Territory*> attackOptions;
+                        int counter;
+                        for(int j = 0; i < toDefend(player)[i]->getAdjacentTerritory().size(); j++){
+                            if(toDefend(player)[i]->getAdjacentTerritory()[j]->getOwnerPlayerName() == nullptr || player->getPlayerName().compare(toDefend(player)[i]->getAdjacentTerritory()[j]->getOwnerPlayerName()))
+                        }
+                    }
+                }
+
+                
+
+                break;
+            }
+            // Card
+            case 2:{
+
+                cout << "Which card would you like to play?" << endl;
+                int counter = 0; 
+
+                auto& cardReference = *player->getHand()->getCardsInHand();
+
+
+		        vector<Card *> cards;
+            	for (Card &card : cardReference)
+            	{
+                	cards.push_back(&card);
+            	}
+
+                for(Card* c : cards){
+                    cout << counter << ": " << c->cardTypeToString(c->getType()) << endl;
+                    counter++;
+                }
+
+                int userCardChoice;
+                cout << "Enter the number of the card you would like to play: ";
+                cin >> userCardChoice;
+
+                Card* userCard = nullptr;
+
+                if(userCardChoice > 0 && userCardChoice < cards.size()){
+                    userCard = cards[userCardChoice];
+                }
+
+                cout << "Playing the " << userCard->cardTypeToString(userCard->getType()) << " card." << endl;
+
+                userCard->play(deck, player->getHand());
+
+                break;
+            }
+            case 3:{
+                cout << "Ending your turn." << endl;
+                return false;
+            }
+            default:{
+                //throw exception("Invalid choice. Please try again.");
+		        throw std::runtime_error("Invalid choice. Please try again.");
+            }
+        }
+    }
+    return true;
+
+}
+
+vector<Territory*> AggressivePlayerStrategy::toAttack(Player* player){
+
+    vector<Territory*> territoriesToAttack = player->getAttack();
+
+    for (unsigned int i = 0; i < territoriesToAttack.size(); i++) {
+        cout << territoriesToAttack[i]->getNameOfTerritory() << "\n";
     }
 
-    return territoriestoDefend;
+    return territoriesToAttack;
 }
+
+vector<Territory*> AggressivePlayerStrategy::toDefend(Player* player){
+
+    return player->getTerritories();
+}
+
+
+
+
+
 
 
 
