@@ -360,6 +360,9 @@ void Advance::execute()
                     attackerTerritories.push_back(trgtTerritory);
                     player->setTerritories(attackerTerritories);
 
+                    // Update the owner of the target territory to the attacker
+                    trgtTerritory->setOwnerPlayer(player);
+
                     // Updating the units
                     *(trgtTerritory->getNumArmies()) = advancedUnits;
                     *(srcTerritory->getNumArmies()) -= numUnits;
@@ -368,7 +371,6 @@ void Advance::execute()
                 }
                 else
                 {
-
                     std::cout << "Could not find the defending player." << std::endl;
                 }
             }

@@ -30,6 +30,7 @@ class HumanPlayerStrategy : public PlayerStrategy{
 
 /**
  * @brief Concrete strategy class for aggressive player. Will focus on attacking and only deploy/advance armies onto its strongest country.
+ *        Can only play cards that have an aggressive purpose (presumably only bomb)
  * 
  */
 class AggressivePlayerStrategy: public PlayerStrategy{

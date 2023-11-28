@@ -235,21 +235,26 @@ bool AggressivePlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, 
     std::mt19937 mt(rd());
     bool advance;
 
+    //updates the current player's strongest territory.
+    setStrongestTerritory(player);
+
     //Will automatically deploy a random number of troops into the strongest territory
     if(*player->getReinforcementPool() > 0){
         
+        //Produces a random number between 1 and the size of the player's reinforcement pool
         std::uniform_int_distribution<int> distribution(1, *player->getReinforcementPool());
-        
         int aggTroopChoice = distribution(mt);
 	    
-        Deploy *deploy = new Deploy(player, strongestTerritory->getNameOfTerritory(), aggTroopChoice); // Updated to match the new Deploy constructor
-	    
+        //Deploys the random number of troops
+        Deploy *deploy = new Deploy(player, strongestTerritory->getNameOfTerritory(), aggTroopChoice); 
+
         player->getOrdersList()->addOrder(deploy);
 
         cout << "AggressivePlayer Troops deployed." << endl;
         
         advance = true;
 
+        //Subtracts random number of troops from reinforcement
         *player->getReinforcementPool() -= aggTroopChoice;
     }
     else{
@@ -283,64 +288,92 @@ bool AggressivePlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, 
 
                 Territory* sourceTerritory = nullptr;
 
+                //Gets list of territories within the player's control
                 vector<Territory*> defendedTerritories = player->getDefend();
 
                 for(int i = 0; i < defendedTerritories.size(); i++){
-                    if(defendedTerritories[i]->getNumArmies() > 0){
+
+                    int* numTroops = defendedTerritories[i]->getNumArmies();
+
+                    if(numTroops > 0){
+                        //List of territories the player can attack. 
                         vector<Territory*> attackOptions;
                         int counter;
+
+                        //cycles through all of the territories adjacent to the current territory
                         for(int j = 0; i < toDefend(player)[i]->getAdjacentTerritory().size(); j++){
-                            if(toDefend(player)[i]->getAdjacentTerritory()[j]->getOwnerPlayerName() == nullptr || player->getPlayerName().compare(toDefend(player)[i]->getAdjacentTerritory()[j]->getOwnerPlayerName()))
+                            //Checks to see if a territory is either owned by no one or owned by another player. Adds that territory to a list of attackable territories if this is the case.
+                            if(toDefend(player)[i]->getAdjacentTerritory()[j]->getOwnerPlayerName() == nullptr || player->getPlayerName() != toDefend(player)[i]->getAdjacentTerritory()[j]->getOwnerPlayerName()){
+                                attackOptions[counter] = toDefend(player)[i]->getAdjacentTerritory()[j];
+                                counter++;
+                            }
+                        }
+                        if(attackOptions.size() == 0){
+                            //If no adjacent territories can be attacked, and the current territory is the strongest territory, sent troops to random adjacent territory.
+                            if(defendedTerritories[i]->getNameOfTerritory() == strongestTerritory->getNameOfTerritory()){
+                                std::uniform_int_distribution<int> distribution(0, strongestTerritory->getAdjacentTerritory().size() - 1);
+                                int destinationChoice = distribution(mt);
+
+                                Advance *advanceOrder = new Advance(player, defendedTerritories[i]->getNameOfTerritory(), strongestTerritory->getAdjacentTerritory()[destinationChoice]->getNameOfTerritory(), game, *numTroops);
+                            
+                                player->getOrdersList()->addOrder(advanceOrder);
+                            }
+                            //If the current territory is not the strongest territory, advances troops to the strongest territory.
+                            else{
+                                Advance *advanceOrder = new Advance(player, defendedTerritories[i]->getNameOfTerritory(), strongestTerritory->getNameOfTerritory(), game, *numTroops);
+                            }
+                        }
+                        //Sends troops to random attackable adjacent territory.
+                        else{
+                            std::uniform_int_distribution<int> distribution(0, attackOptions.size() - 1);
+                            int destinationChoice = distribution(mt);        
+
+                            Territory* attackChoice = attackOptions[destinationChoice];                
+
+                            Advance *advanceOrder = new Advance(player, defendedTerritories[i]->getNameOfTerritory(), attackChoice->getNameOfTerritory(), game, *numTroops);    
                         }
                     }
                 }
-
-                
-
+                advance = false;
                 break;
+
             }
-            // Card
+            // Card (can only play bomb card)
             case 2:{
-
-                cout << "Which card would you like to play?" << endl;
-                int counter = 0; 
-
                 auto& cardReference = *player->getHand()->getCardsInHand();
 
-
 		        vector<Card *> cards;
+
             	for (Card &card : cardReference)
             	{
                 	cards.push_back(&card);
             	}
 
-                for(Card* c : cards){
-                    cout << counter << ": " << c->cardTypeToString(c->getType()) << endl;
-                    counter++;
-                }
-
-                int userCardChoice;
-                cout << "Enter the number of the card you would like to play: ";
-                cin >> userCardChoice;
-
                 Card* userCard = nullptr;
 
-                if(userCardChoice > 0 && userCardChoice < cards.size()){
-                    userCard = cards[userCardChoice];
+                int count = 0;
+                
+                //Cycles through player's list of cards until it sees a bomb card, in which case it executes the bomb card. If not bomb card found, ends.
+                for(int i = 0; i < cards.size(); i++){
+                    if(cards[i]->getType() == bomb){
+                        userCard = cards[i];
+                        userCard->play(deck, player->getHand());
+                        count++;
+                        break;
+                    }
                 }
 
-                cout << "Playing the " << userCard->cardTypeToString(userCard->getType()) << " card." << endl;
-
-                userCard->play(deck, player->getHand());
+                if(count == 0){
+                    cout << "No cards to play" << endl;
+                }
 
                 break;
             }
             case 3:{
-                cout << "Ending your turn." << endl;
+                //Ends turn
                 return false;
             }
             default:{
-                //throw exception("Invalid choice. Please try again.");
 		        throw std::runtime_error("Invalid choice. Please try again.");
             }
         }
@@ -353,8 +386,12 @@ vector<Territory*> AggressivePlayerStrategy::toAttack(Player* player){
 
     vector<Territory*> territoriesToAttack = player->getAttack();
 
-    for (unsigned int i = 0; i < territoriesToAttack.size(); i++) {
-        cout << territoriesToAttack[i]->getNameOfTerritory() << "\n";
+    for(Territory* t : player->getTerritories()){
+        for(Territory* adjacent : t->getAdjacentTerritory()){
+            if(adjacent->getOwnerPlayerName() != player->getPlayerName()){
+                territoriesToAttack.push_back(adjacent);
+            }
+        }
     }
 
     return territoriesToAttack;
