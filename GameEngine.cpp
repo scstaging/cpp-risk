@@ -1,8 +1,13 @@
 #include <iostream>
 using namespace std;
 #include <typeinfo>
+#include <algorithm>
 #include <map>
 #include "GameEngine.h"
+#include "Player.h"
+#include "Map.h"
+#include "Cards.h"
+#include "Orders.h"
 
 // Defines each update function to handle transitions using the command
 // Control flow through available commands and handles accordingly
@@ -417,6 +422,64 @@ void GameEngine::update(std::string command)
 {
     // Game engine update applies unique state's update logic
     currentState->update(this, command);
+
+    // Logging Observer Overrride
+    Notify();
+}
+
+ // Logging Observer Overrride
+ std::string GameEngine::stringToLog()
+ {
+    return this->getCurrentState();
+ }
+
+list<Player*> GameEngine::getPlayers(){
+    return listOfPlayers;
+}
+
+
+void GameEngine::startupPhase(){
+    string command;
+    cout << "Enter a command: " << endl;
+    cin >> command;
+
+    /*if(command == "gameStart"){
+        Deck* deck = new Deck();
+        vector<Territory*> mapTerritories = map.getTerritory();
+        //Distribute territories equally amonst all players
+        int* playerTurn = 0;
+        for(int i = 0, i < mapTerritories.size(); i++){
+            vector<Territory*> playerTerritories = listOfPlayers[playerTurn].getTerritories();
+            playerTerritories.push_back(mapTerritories[i]);
+            playerTurn++
+            if(playerTurn > listOfPlayers.size()){
+                playerTurn = 1;
+            }
+        }
+
+        //Create a list containing all players in the game into playOrder
+
+        list<Player*> playOrder;
+        for(int i = 0; i < listOfPlayers.size(); i++){
+            playOrder.push_back(listOfPlayers[i]);
+        }
+
+        //Randomize list of players and let them play in that order
+        playerOrder.randomize()
+
+        for(int i = 0; i < playerOrder.size(); i++){
+            Hand* playerHand = playerOrder[i].getHand();
+            playerOrder[i].incrementReinforcementPool(50);
+            deck.draw(playerHand);
+            deck.draw(PlayerHand);
+        }
+
+        setPhase(play);
+
+    }*/
+
+
+
 }
 
 void GameEngine::mainGameLoop(){
@@ -466,9 +529,10 @@ void GameEngine::reinforcementsPhase(){
         //Updates list of continents that player owns territories in. 
         for(Territory* t : player->getTerritories()){
             Continent* continent = t->getContinent();
-            auto& playerContinents = player->getContinents(); 
+            vector<Continent*> playerContinents = player->getContinents(); 
 
-            auto it = std::find(playerContinents.begin(), playerContinents.end(), continent);
+            auto it = find_if(playerContinents.begin(), playerContinents.end(), 
+                       [continent](const Continent* c) { return c == continent; });
 
             if(it == playerContinents.end()){
                 playerContinents.push_back(continent);
@@ -479,10 +543,11 @@ void GameEngine::reinforcementsPhase(){
         for(Continent* c : player->getContinents()){
             int ownedTerritories = 0; 
             const std::vector<Territory*>& continentTerritories = c->getContinentTerritories();
-            auto& playerTerritories = player->getTerritories();
+            vector<Territory*> playerTerritories = player->getTerritories();
 
             for(Territory* t : continentTerritories){
-                auto it = std::find(playerTerritories.begin(), playerTerritories.end(), t);
+                auto it = find_if(playerTerritories.begin(), playerTerritories.end(),
+                       [t](const Territory* territory) { return territory == t; });
                 if(it != playerTerritories.end()){
                     ownedTerritories++;
                 }
@@ -520,7 +585,7 @@ void GameEngine::issueOrdersPhase(){
         for(Player* player : listOfPlayers){
             if(playerStatus[player->getPlayerName()]){
                 //issueOrder function will return "true" if turn is not ended, and "false" if it is
-                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map);
+                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map, this);
                 
                 //if issueOrder function returns "false", means player has ended their turn. Decrements # of players that can go
                 if(!playerStatus[player->getPlayerName()]){
@@ -557,8 +622,38 @@ void GameEngine::executeOrdersPhase(){
             } 
         }
     }
+}
 
-    
+// features for the order execution to verify if players negociated
+void GameEngine::addNegotiation(Player *player1, Player *player2)
+{
+    activeNegotiations.insert(std::make_pair(player1, player2));
+}
+
+void GameEngine::clearNegotiations()
+{
+    activeNegotiations.clear();
+}
+
+bool GameEngine::isUnderNegotiation(Player *player1, Player *player2)
+{
+    return activeNegotiations.find(std::make_pair(player1, player2)) != activeNegotiations.end();
+}
+
+// determine the owner of a territory
+Player *GameEngine::getOwnerOfTerritory(Territory *territory)
+{
+    for (Player *player : listOfPlayers)
+    { // Assuming listOfPlayers is a list of all players
+        for (Territory *ownedTerritory : player->getTerritories())
+        {
+            if (ownedTerritory == territory)
+            {
+                return player;
+            }
+        }
+    }
+    return nullptr; // No player owns the territory
 }
 
 /*

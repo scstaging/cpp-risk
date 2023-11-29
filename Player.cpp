@@ -1,6 +1,6 @@
 #include "Player.h"
 #include "Cards.h"
-
+#include <stdexcept>
 #include <iostream>
 #include <vector>
 
@@ -138,10 +138,10 @@ void Player::setTerritories(vector<Territory*> territories)
 
 
 /* Mandatory Features For A1 */
-bool Player::issueOrder(Deck* deck, Map* map)
+bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
 {
     
-    if(this->reinforcementPool > 0){
+    if(*this->reinforcementPool > 0){
         cout << this->playerName << ", it is your turn to issue an order. You still have reinforcements that must be deployed." << endl;
         cout << "Which territory would you like to deploy them in?" << endl;
         int counter = 0;
@@ -173,7 +173,8 @@ bool Player::issueOrder(Deck* deck, Map* map)
         while(userTroopChoice > 0 && userTroopChoice <= *this->reinforcementPool)
             cin >> userTroopChoice;
         
-        auto* deploy = new Deploy(userTroopChoice, deployedTerritoryName);
+	Deploy *deploy = new Deploy(this, deployedTerritoryName, userTroopChoice); // Updated to match the new Deploy constructor
+	    
 
         this->ordersList->addOrder(deploy);
 
@@ -198,11 +199,9 @@ bool Player::issueOrder(Deck* deck, Map* map)
         cout << "3. End your turn" << endl;
         options.push_back(3);
 
-        if(std::find(options.begin(), options.end(), userChoice) != options.end()){
+        while (std::find_if(options.begin(), options.end(),
+            [userChoice](const auto& option) { return option == userChoice; }) != options.end()) {
             cin >> userChoice;
-        }
-        else{
-            cout << "Invalid choice. Please try again." << endl;
         }
 
         switch(userChoice){
@@ -270,7 +269,7 @@ bool Player::issueOrder(Deck* deck, Map* map)
                     cout << "Invalid choice. Please try again.";
                 }
 
-                Advance* advanceOrder = new Advance(troopNumber, sourceTerritory->getNameOfTerritory(), targetTerritory->getNameOfTerritory());
+		Advance *advanceOrder = new Advance(this, sourceTerritory->getNameOfTerritory(), targetTerritory->getNameOfTerritory(), game, troopNumber);
 
                 this->ordersList->addOrder(advanceOrder);
 
@@ -285,7 +284,12 @@ bool Player::issueOrder(Deck* deck, Map* map)
 
                 auto& cardReference = *this->hand->getCardsInHand();
 
-                vector<Card*> cards(cardReference.begin(), cardReference.end());
+
+		vector<Card *> cards;
+            	for (Card &card : cardReference)
+            	{
+                	cards.push_back(&card);
+            	}
 
                 for(Card* c : cards){
                     cout << counter << ": " << c->cardTypeToString(c->getType()) << endl;
@@ -313,7 +317,8 @@ bool Player::issueOrder(Deck* deck, Map* map)
                 return false;
             }
             default:{
-                throw exception("Invalid choice. Please try again.");
+                //throw exception("Invalid choice. Please try again.");
+		throw std::runtime_error("Invalid choice. Please try again.");
             }
         }
     }

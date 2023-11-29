@@ -4,8 +4,52 @@
 #include "Cards.h"
 #include "Map.h"
 #include <iostream>
+void testOrderExecution(){
+GameEngine *game = new GameEngine();
 
+    Maploader maploader;
+
+    Map *map = maploader.readFiles("map1.map");
+    // get all the territories
+    vector<Territory *> map_territories = map->getTerritory();
+
+    cout << "**** Create a player and assign the territory ****\n";
+
+    Territory *territory = map_territories[0]; // For simplicity, choose the first territory
+
+    cout << "**** Create a player and assign the territory ****\n";
+    // Create a player and assign the territory
+    Player *player = new Player("Player1");
+    std::vector<Territory *> playerTerritories = {territory};
+    player->setTerritories(playerTerritories);
+
+    // Set up the initial number of armies in the territory
+    int initialArmies = 5;
+    *(territory->getNumArmies()) = initialArmies;
+
+    // Set up the player's reinforcements
+    int reinforcements = 3;
+    player->incrementReinforcementPool(reinforcements);
+
+    // Create a Deploy order
+    int deployArmies = 2;
+    std::string targetTerritoryName = "Sample Territory";
+    Deploy *deployOrder = new Deploy(player, targetTerritoryName, deployArmies);
+    // Validate and execute the Deploy order
+    if (deployOrder->validate())
+    {
+        deployOrder->execute();
+        std::cout << "Deploy order executed successfully." << std::endl;
+        std::cout << "New number of armies in " << targetTerritoryName << ": " << *(territory->getNumArmies()) << std::endl;
+    }
+    // Clean up dynamically allocated resources
+    delete deployOrder;
+    delete player;
+    delete map;
+    delete game;
+}
 void testOrdersLists() {
+    /*
 
     // Create an OrdersList object
     OrdersList ordersList;
@@ -55,12 +99,13 @@ void testOrdersLists() {
     ordersList.remove(0);  // Remove the order at index 0 (which is the Bomb order after the move operation)
     std::cout << ordersList << std::endl;
 
-    
+    */
 
   
 }
 /*
 int main() {
-    testOrdersLists();
+    testOrderExecution();
+    //testOrdersLists();
     return 0;
 }*/

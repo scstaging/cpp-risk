@@ -2,8 +2,13 @@
 #include <vector>
 #include <string>
 #include "Player.h"
+#include "LoggingObserver.h"
+#include <set>
+#include <utility>
 
 class GameEngine;
+class Player;
+
 // State Template Class
 class GameState
 {
@@ -212,7 +217,7 @@ class Win : public GameState
 };
 
 // Game Engine Class
-class GameEngine
+class GameEngine : public Subject
 {
     private:
         // Stores pointer to current state
@@ -220,6 +225,8 @@ class GameEngine
         list<Player*> listOfPlayers;
         Map* map;
         Deck* deck;
+        std::set<std::pair<Player *, Player *>> activeNegotiations;
+
 
     public:
 
@@ -233,6 +240,9 @@ class GameEngine
         GameEngine& operator=(const GameEngine& other);
         // Stream Insertion Overload
         std::istream& operator >> (std::istream &in);
+
+        // Logging Observer Overrride
+        std::string stringToLog();
 
         // Returns current state
         std::string getCurrentState();
@@ -249,13 +259,33 @@ class GameEngine
         // Each transition applies it's own logic
         void setState(GameState& newState);
 
+        // Returns list of players
+        list<Player*> getPlayers();
+
+        void gameStart();
+
+        // Triggers the startup phase of the game
+        void startupPhase();
+
+        // Triggers the main game loops 
         void mainGameLoop();
 
+        // Triggers the reinforcement phase in the main game loop
         void reinforcementsPhase();
 
+        // Triggers the issue orders phase in the main game loop
         void issueOrdersPhase();
 
+        // Triggers the execute orders phase in the main game loop
         void executeOrdersPhase();
+
+        // features for the order execution to verify if players negociated
+        void addNegotiation(Player *player1, Player *player2);
+        void clearNegotiations();
+        bool isUnderNegotiation(Player *player1, Player *player2);
+        
+        // determine the owner of a territory
+        Player* getOwnerOfTerritory(Territory* territory);
 };
 
 /*

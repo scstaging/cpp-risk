@@ -7,6 +7,8 @@
 using namespace std;
 
 class Territory;
+
+
 class Continent
 {
 private:
@@ -17,10 +19,11 @@ private:
 public:
     Continent();
     Continent(string name);
+    Continent(string name);
     Continent(string name, int bonus);
     string getNameOfContinent();
     int getControlBonus() const;
-    vector<Territory*> getContinentTerritories() const; 
+    vector<Territory*> getContinentTerritories() const;
 };
 
 class Territory

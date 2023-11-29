@@ -334,6 +334,11 @@ Continent::Continent()
     nameOfContinent = "";
 }
 
+Continent::Continent(string name)
+{
+    nameOfContinent = "name";
+}
+
 Continent::Continent(string name, int bonus)
 {
     nameOfContinent = name;
