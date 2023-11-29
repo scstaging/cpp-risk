@@ -38,6 +38,7 @@ class Player {
         vector<Territory*> getTerritories() const;
         vector<Territory*> getDefend() const;
         vector<Territory*> getAttack() const;
+        PlayerStrategy* getStrategy();
 
         /* Setters */
         void setPlayerName(string name);
@@ -63,5 +64,5 @@ class Player {
         vector<Territory*> territories;
         vector<Territory*> attack;
         vector<Territory*> defend;
-        PlayerStrategy *strategy;
+        PlayerStrategy* strategy;
 };

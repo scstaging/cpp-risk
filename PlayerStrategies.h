@@ -9,12 +9,13 @@
  */
 class PlayerStrategy {
 
-    PlayerStrategy();
-    virtual ~PlayerStrategy();
+    public:
+        PlayerStrategy();
+        virtual ~PlayerStrategy();
 
-    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-    virtual vector<Territory*> toDefend(Player *player) = 0;
-    virtual vector<Territory*> toAttack(Player *player) = 0;
+        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        virtual vector<Territory*> toDefend(Player *player) = 0;
+        virtual vector<Territory*> toAttack(Player *player) = 0;
 };
 
 /**
@@ -22,9 +23,11 @@ class PlayerStrategy {
  * 
  */
 class HumanPlayerStrategy : public PlayerStrategy{
-    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-    virtual vector<Territory*> toDefend(Player *player) = 0;
-    virtual vector<Territory*> toAttack(Player *player) = 0;
+
+    public: 
+        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        virtual vector<Territory*> toDefend(Player *player) = 0;
+        virtual vector<Territory*> toAttack(Player *player) = 0;
 
 };
 
@@ -36,15 +39,14 @@ class HumanPlayerStrategy : public PlayerStrategy{
 class AggressivePlayerStrategy: public PlayerStrategy{
 
     protected:
-    Territory* strongestTerritory;
+        Territory* strongestTerritory;
 
     public:
-
-    Territory* getStrongestTerritory();
-    void setStrongestTerritory(Player* player);
-    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-    virtual vector<Territory*> toDefend(Player *player) = 0;
-    virtual vector<Territory*> toAttack(Player *player) = 0;
+        Territory* getStrongestTerritory();
+        void setStrongestTerritory(Player* player);
+        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        virtual vector<Territory*> toDefend(Player *player) = 0;
+        virtual vector<Territory*> toAttack(Player *player) = 0;
 
 };
 
@@ -55,15 +57,14 @@ class AggressivePlayerStrategy: public PlayerStrategy{
 class BenevolentPlayerStrategy: public PlayerStrategy{
 
     protected:
-    Territory* weakestTerritory;
+        Territory* weakestTerritory;
 
     public:
-
-    Territory* getWeakestTerritory();
-    void setWeakestTerritory(Player* player);
-    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-    virtual vector<Territory*> toDefend(Player *player) = 0;
-    virtual vector<Territory*> toAttack(Player *player) = 0;
+        Territory* getWeakestTerritory();
+        void setWeakestTerritory(Player* player);
+        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        virtual vector<Territory*> toDefend(Player *player) = 0;
+        virtual vector<Territory*> toAttack(Player *player) = 0;
 
 };
 
@@ -74,13 +75,12 @@ class BenevolentPlayerStrategy: public PlayerStrategy{
 class NeutralPlayerStrategy: public PlayerStrategy{
     
     protected:
-    bool aggressive;
+        bool aggressive;
 
     public:
-
-    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-    virtual vector<Territory*> toDefend(Player *player) = 0;
-    virtual vector<Territory*> toAttack(Player *player) = 0;
+        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        virtual vector<Territory*> toDefend(Player *player) = 0;
+        virtual vector<Territory*> toAttack(Player *player) = 0;
 
 };
 
@@ -89,9 +89,12 @@ class NeutralPlayerStrategy: public PlayerStrategy{
  * 
  */
 class CheaterPlayerStrategy: public PlayerStrategy{
-    virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-    virtual vector<Territory*> toDefend(Player *player) = 0;
-    virtual vector<Territory*> toAttack(Player *player) = 0;
+
+    public:
+        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        virtual vector<Territory*> toDefend(Player *player) = 0;
+        virtual vector<Territory*> toAttack(Player *player) = 0;
+
 };
 
 

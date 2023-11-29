@@ -206,7 +206,7 @@ public:
     OrdersList &operator=(const OrdersList &other);
 
     // Logging Observer Overrride
-    std::string logToString();
+    std::string stringToLog();
 };
 
 #endif // ORDERS_H

@@ -152,26 +152,26 @@ void Player::setStrategy(PlayerStrategy* strategy){
     this->strategy = strategy;
 }
 
+PlayerStrategy* Player::getStrategy()
+{
+    return this->strategy;
+}
 
 /* Mandatory Features For A1 */
 bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
 {
-    return this->strategy->issueOrder(this, deck, map, game);
+    return this->getStrategy()->issueOrder(this, deck, map, game);
 }
-
 
 vector<Territory*> Player::toAttack() 
 {
-    return this->strategy->toAttack(this);
+    return this->getStrategy()->toAttack(this);
 }
-
-
 
 vector<Territory*> Player::toDefend() 
 {
-    return this->strategy->toDefend(this);
+    return this->getStrategy()->toDefend(this);
 }
-
 
 /* Additional Features */
 bool Player::hasCard(CardType type) {
