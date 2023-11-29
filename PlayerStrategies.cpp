@@ -200,10 +200,14 @@ bool HumanPlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, GameE
 
 vector<Territory*> HumanPlayerStrategy::toAttack(Player* player){
 
-    vector<Territory*> territoriesToAttack = player->getAttack();
+   vector<Territory*> territoriesToAttack = player->getAttack();
 
-    for (unsigned int i = 0; i < territoriesToAttack.size(); i++) {
-        cout << territoriesToAttack[i]->getNameOfTerritory() << "\n";
+    for(Territory* t : player->getTerritories()){
+        for(Territory* adjacent : t->getAdjacentTerritory()){
+            if(adjacent->getOwnerPlayerName() != player->getPlayerName()){
+                territoriesToAttack.push_back(adjacent);
+            }
+        }
     }
 
     return territoriesToAttack;

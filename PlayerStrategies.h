@@ -18,7 +18,7 @@ class PlayerStrategy {
 };
 
 /**
- * @brief Concreate stategy class for human user
+ * @brief Concrete stategy class for human user
  * 
  */
 class HumanPlayerStrategy : public PlayerStrategy{
