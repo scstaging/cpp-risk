@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "PlayerStrategies.h"
 #include "Orders.h"
+#include <algorithm>
 
 // HumanPlayerStrategy Class
 
@@ -406,11 +407,236 @@ vector<Territory*> AggressivePlayerStrategy::toDefend(Player* player){
     return player->getTerritories();
 }
 
+// ** BENEVOLENT PLAYER ** //
+Territory* BenevolentPlayerStrategy::getWeakestTerritory(){
+    return weakestTerritory;
+}
 
+void BenevolentPlayerStrategy::setWeakestTerritory(Player* player){
+    // Bubble Sort?
+    // Sets weakest territory as first Benevolent player element
+    this->weakestTerritory = player->toDefend()[0];
 
+    // Iterates through Benevolent player territories
+    for(int i = 0; i < player->toDefend().size(); i++)
+    {
+        // Sets weakest territory through bubble sort-like method
+        if(player->toDefend()[i]->getNumArmies() < weakestTerritory->getNumArmies())
+        {
+            this->weakestTerritory = player->toDefend()[i];
+        }
+    }
+}
 
+bool BenevolentPlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game)
+{
+    cout << "Benevolent Player's turn" << endl;
+    cout << "Benevolent Player draws a card" << endl;
 
+    deck->draw(player->getHand());
 
+    std::random_device rd;
+    std::mt19937 mt(rd());
 
+    //updates the current player's strongest territory.
+    setWeakestTerritory(player);
 
+    //Will automatically deploy a random number of troops into the weakest territory
+    if(*player->getReinforcementPool() > 0){
+        
+        //Produces a random number between 1 and the size of the player's reinforcement pool
+        std::uniform_int_distribution<int> distribution(1, *player->getReinforcementPool());
+        int benTroopChoice = distribution(mt);
+	    
+        //Deploys the random number of troops
+        Deploy *deploy = new Deploy(player, weakestTerritory->getNameOfTerritory(), benTroopChoice); 
 
+        player->getOrdersList()->addOrder(deploy);
+
+        cout << "Benevolent Player Troops deployed." << endl;
+        cout << "Benevolent Player reinforced " + weakestTerritory->getNameOfTerritory() << endl;
+
+        //Subtracts random number of troops from reinforcement
+        *player->getReinforcementPool() -= benTroopChoice;
+    }
+
+    // Doesn't have reinforcements to deploy
+    else
+    {
+        int benevolentChoice;
+
+        list<int> options = list<int>(); 
+        
+        //Option to play a card
+        if(player->getHand()->getCardsInHand()->size() > 0){
+            options.push_back(1);
+        }
+
+        //Option to end turn
+        options.push_back(2);
+
+        // Random number between 1 and 2 for choice
+        std::uniform_int_distribution<int> distribution(1, options.size() - 1);
+
+        //Chooses random number corresponding to action from the options list
+        benevolentChoice = distribution(mt);
+
+        switch (benevolentChoice)
+        {
+        case 1:
+        {
+            auto& cardReference = *player->getHand()->getCardsInHand();
+
+		    vector<Card *> cards;
+
+            for (Card &card : cardReference)
+            {
+                cards.push_back(&card);
+            }
+
+            Card* userCard = nullptr;
+
+            int count = 0;
+                
+            // Cycles through player's cards until it sees a card that is not a bomb or an airlift. If so, plays the card
+            for(int i = 0; i < cards.size(); i++)
+            {
+                if(cards[i]->getType() != bomb && cards[i]->getType() != airlift)
+                {
+                    userCard = cards[i];
+                    userCard->play(deck, player->getHand());
+                    count++;
+                    break;
+                }
+            }
+
+            if(count == 0){
+                cout << "No cards the Benevolent wants to play" << std::endl;
+            }
+            break;
+        }
+        case 2:
+        {
+            //Ends turn
+            cout << "Benevolent decides to end his turn." << std::endl;
+            return false;
+        }
+        }
+    }
+
+}
+
+// List of attackable territories for Benevolent Player
+    // (This is created for the sake of redundency)
+vector<Territory*> BenevolentPlayerStrategy::toAttack(Player* player)
+{
+    // Creates empty vector array
+    vector<Territory*> attackable = {};
+
+    // Returns empty vector array
+    return attackable;
+}
+
+// List of territories under Benevolent Player control
+vector<Territory*> BenevolentPlayerStrategy::toDefend(Player* player)
+{
+    return player->getTerritories();
+}
+// ** END BENEVOLENT PLAYER ** //
+
+// ** NEUTRAL PLAYER ** //
+bool NeutralPlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game)
+{
+    cout << "Neutral Player turn" << endl;
+    cout << "Neutral Player draws a card" << endl;
+
+    // Draws card
+    deck->draw(player->getHand());
+
+    // Ends turn
+    cout << "Neutral Player ends his turn" << endl;
+    
+    return false;
+}
+// ** END NEUTRAL PLAYER ** //
+
+// ** CHEATER PLAYER ** //
+bool CheaterPlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game)
+{
+    cout << "Cheater Player turn" << endl;
+    cout << "Cheater player draws a card" << endl;
+
+    deck->draw(player->getHand());
+
+    std::random_device rd;
+    std::mt19937 mt(rd());
+
+    //Will automatically deploy a random number of troops into the weakest territory
+    if(*player->getReinforcementPool() > 0)
+    {
+        Territory* toReinforce;
+
+        // Gets random index from 0 to number of player territories - 1
+        int randIndex = std::rand() % player->toDefend().size();
+
+        // Sets territory to reinforce to a random territory under control of cheater
+        toReinforce = player->getTerritories()[randIndex];
+
+        //Produces a random number between 1 and the size of the player's reinforcement pool
+        std::uniform_int_distribution<int> distribution(1, *player->getReinforcementPool());
+
+        // Computer 'decides' to reinforce random territory with arbitrary amount of troops
+        int cheaterTroopChoice = distribution(mt);
+	    
+        //Deploys the random number of troops to random territory
+        Deploy *deploy = new Deploy(player, toReinforce->getNameOfTerritory(), cheaterTroopChoice); 
+
+        player->getOrdersList()->addOrder(deploy);
+
+        cout << "Cheater Player Troops deployed." << endl;
+        cout << "Cheater Player reinforced " + toReinforce->getNameOfTerritory() << endl;
+
+        //Subtracts random number of troops from reinforcement
+        *player->getReinforcementPool() -= cheaterTroopChoice;
+    }
+
+    // Get list of adjacent territories to computer player
+    vector<Territory*> toConquer = player->toAttack();
+
+    // Immeditetly 'conquer' territories
+        // (Set all adjacent territories to cheater player control and remove from other players without condition)
+    for (int i = 0; i < toConquer.size(); i++)
+    {
+        // Display conquering message
+        cout << "Cheater has conquered " + toConquer[i]->getNameOfTerritory() << endl;
+
+        // Draw card for conquered territory
+        deck->draw(player->getHand());
+
+        // Transfers ownership
+        toConquer[i]->setOwnerPlayer(player);
+    }
+}
+
+// List of adjacent territories to Cheataer Player
+vector<Territory*> CheaterPlayerStrategy::toAttack(Player* player){
+
+    vector<Territory*> territoriesToAttack = player->getAttack();
+
+    for(Territory* t : player->getTerritories()){
+        for(Territory* adjacent : t->getAdjacentTerritory()){
+            if(adjacent->getOwnerPlayerName() != player->getPlayerName()){
+                territoriesToAttack.push_back(adjacent);
+            }
+        }
+    }
+
+    return territoriesToAttack;
+}
+
+// List of territories under Cheater Player control
+vector<Territory*> CheaterPlayerStrategy::toDefend(Player* player){
+
+    return player->getTerritories();
+}
+// ** END CHEATER PLAYER ** //
