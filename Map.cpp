@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "Player.h"
 #include <string>
 #include <vector>
 #include <iostream>
@@ -329,6 +330,16 @@ string Territory::getTerritoryName()
     return nameOfTerritory;
 }
 
+string* Territory::getOwnerPlayerName()
+{
+    return this->ownerPlayer->getPlayerName();
+}
+
+void Territory::setOwnerPlayer(Player* player)
+{
+    this->ownerPlayer = player;
+}
+
 Continent::Continent()
 {
     nameOfContinent = "";
@@ -355,7 +366,7 @@ int Continent::getControlBonus() const
     return controlBonus;
 }
 
-vector<Territory *> Continent::getContinentTerritories() const
+vector<Territory*> Continent::getContinentTerritories()
 {
-    return continentTerritories;
+    return this->continentTerritories;
 }

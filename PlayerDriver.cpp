@@ -103,7 +103,7 @@ void testPlayers()
 
     /* TEST: issueOrder() */
 
-    p1->issueOrder();
+    // p1->issueOrder();
 
     cout << "\np1 has issued the following orders:\n" << *p1->getOrdersList();
 

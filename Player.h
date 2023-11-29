@@ -2,6 +2,7 @@
 #include "Cards.h"
 #include "Orders.h"
 #include "Map.h"
+#include "PlayerStrategies.h"
 
 #include <vector>
 #include <string>
@@ -35,11 +36,14 @@ class Player {
         void incrementReinforcementPool(int increase); 
         vector<Continent*> getContinents() const;
         vector<Territory*> getTerritories() const;
+        vector<Territory*> getDefend() const;
+        vector<Territory*> getAttack() const;
 
         /* Setters */
         void setPlayerName(string name);
         void setHand(Hand* hand);
         void setTerritories(vector<Territory*> territories);
+        void setStrategy(PlayerStrategy *strategy);
 
         /* Mandatory Features For A1 */
         bool issueOrder(Deck* deck, Map* map, GameEngine *game); // creates an Order object and puts it in the player’s list of orders
@@ -59,4 +63,5 @@ class Player {
         vector<Territory*> territories;
         vector<Territory*> attack;
         vector<Territory*> defend;
+        PlayerStrategy *strategy;
 };
