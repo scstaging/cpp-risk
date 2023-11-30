@@ -38,6 +38,15 @@ Player::Player(const Player& copiedPlayer)
     // this->territories = copiedPlayer.territories;
 }
 
+// Extra constructor for ease of use when declaring computer players
+Player::Player(std::string name, PlayerStrategy* strategy)
+{
+    this->playerName = new string(name);
+    this->strategy = strategy;
+    this->hand = new Hand();
+    this->ordersList = new OrdersList();
+}
+
 /* Destructor */
 Player::~Player() 
 {

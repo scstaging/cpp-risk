@@ -20,7 +20,8 @@ class GameEngine;
 class Player {
     public:
         Player();   
-        Player(string name);   
+        Player(string name);
+        Player(string name, PlayerStrategy* strategy);   
         Player(const Player& player);
         ~Player();
 

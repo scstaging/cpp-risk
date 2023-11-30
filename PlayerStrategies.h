@@ -13,7 +13,7 @@ class PlayerStrategy {
         PlayerStrategy();
         virtual ~PlayerStrategy();
 
-        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game) = 0;
         virtual vector<Territory*> toDefend(Player *player) = 0;
         virtual vector<Territory*> toAttack(Player *player) = 0;
 };
@@ -25,9 +25,9 @@ class PlayerStrategy {
 class HumanPlayerStrategy : public PlayerStrategy{
 
     public: 
-        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-        virtual vector<Territory*> toDefend(Player *player) = 0;
-        virtual vector<Territory*> toAttack(Player *player) = 0;
+        bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        vector<Territory*> toDefend(Player *player) = 0;
+        vector<Territory*> toAttack(Player *player) = 0;
 
 };
 
@@ -44,9 +44,9 @@ class AggressivePlayerStrategy: public PlayerStrategy{
     public:
         Territory* getStrongestTerritory();
         void setStrongestTerritory(Player* player);
-        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-        virtual vector<Territory*> toDefend(Player *player) = 0;
-        virtual vector<Territory*> toAttack(Player *player) = 0;
+        bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        vector<Territory*> toDefend(Player *player);
+        vector<Territory*> toAttack(Player *player);
 
 };
 
@@ -62,9 +62,9 @@ class BenevolentPlayerStrategy: public PlayerStrategy{
     public:
         Territory* getWeakestTerritory();
         void setWeakestTerritory(Player* player);
-        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-        virtual vector<Territory*> toDefend(Player *player) = 0;
-        virtual vector<Territory*> toAttack(Player *player) = 0;
+        bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        vector<Territory*> toDefend(Player *player);
+        vector<Territory*> toAttack(Player *player);
 
 };
 
@@ -78,9 +78,9 @@ class NeutralPlayerStrategy: public PlayerStrategy{
         bool aggressive;
 
     public:
-        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-        virtual vector<Territory*> toDefend(Player *player) = 0;
-        virtual vector<Territory*> toAttack(Player *player) = 0;
+        bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        vector<Territory*> toDefend(Player *player);
+        vector<Territory*> toAttack(Player *player);
 
 };
 
@@ -91,9 +91,9 @@ class NeutralPlayerStrategy: public PlayerStrategy{
 class CheaterPlayerStrategy: public PlayerStrategy{
 
     public:
-        virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
-        virtual vector<Territory*> toDefend(Player *player) = 0;
-        virtual vector<Territory*> toAttack(Player *player) = 0;
+        bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game);
+        vector<Territory*> toDefend(Player *player);
+        vector<Territory*> toAttack(Player *player);
 
 };
 
