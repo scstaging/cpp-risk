@@ -43,6 +43,11 @@ Command::Command(commandType command, string addition)
 		commandStr = "quit";
 		commandNumber = 5;
 		break;
+	case commandType::tournament:
+		commandStr = "tournament";
+		this->addition = addition;
+		commandNumber = 6;
+		break;
 	}
 }
 
@@ -85,10 +90,12 @@ void Command::saveEffect(Command *command)
 	case 5:
 		command->effect = "Quitting the game";
 		break;
+	/*
 	case 6:
 		command->effect = "Command for testing purposes that skips the main game loop";
 		break;
-	case 7:
+	*/
+	case 6:
 		command->effect = "Entering tournament mode: " + command->addition;
 		break;
 	}
@@ -196,6 +203,13 @@ Command *CommandProcessor::readCommand()
 		setcmdProPause(true);
 	}
 
+	if (commandStr == "tournament") {
+		cout << "Enter tournament parameters: ";
+		//maybe need to add something here
+		getline(cin, addition); // read the entire line after the command
+		cout <<'\n';
+	}
+
 	// Switch case to decide which command object to create based on the user's input
 	switch (getIndexCmdVector(commandStr))
 	{
@@ -211,6 +225,8 @@ Command *CommandProcessor::readCommand()
 		return new Command(Command::commandType::replay, addition);
 	case 5:
 		return new Command(Command::commandType::quit, addition);
+	case 6:
+		return new Command(Command::commandType::tournament, addition);
 
 	default:
 		// If none of the valid commands are read then the default constructor with the user's input is called
@@ -267,6 +283,13 @@ bool CommandProcessor::validate(Command *command, GameEngine *game)
 	else if (userCommand == "quit" && currentSate == "win")
 	{
 		cout << userCommand << " is valid in the state: " << currentSate;
+		game->update(userCommand); return true;
+	}
+
+	else if (userCommand == "tournament" && currentSate == "start") {
+		//still need to implement the logic to check the correct input here 
+		cout << userCommand << " is valid in the state: " << currentSate;
+
 		game->update(userCommand); return true;
 	}
 
