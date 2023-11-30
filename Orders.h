@@ -1,5 +1,6 @@
 #ifndef ORDERS_H
 #define ORDERS_H
+#pragma once
 #include "Map.h"
 #include "Player.h"
 #include "Cards.h"

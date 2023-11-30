@@ -8,6 +8,8 @@
 
 class GameEngine;
 class Player;
+class Map;
+class Territory;
 
 // State Template Class
 class GameState

@@ -438,10 +438,8 @@ list<Player*> GameEngine::getPlayers(){
 }
 
 
+
 void GameEngine::startupPhase(){
-    string command;
-    cout << "Enter a command: " << endl;
-    cin >> command;
 
     /*if(command == "gameStart"){
         Deck* deck = new Deck();
@@ -585,7 +583,7 @@ void GameEngine::issueOrdersPhase(){
         for(Player* player : listOfPlayers){
             if(playerStatus[player->getPlayerName()]){
                 //issueOrder function will return "true" if turn is not ended, and "false" if it is
-                playerStatus[player->getPlayerName()] = player->issueOrder(this->deck, this->map, this);
+                playerStatus[player->getPlayerName()] = player->issueOrder(player, this->deck, this->map, this);
                 
                 //if issueOrder function returns "false", means player has ended their turn. Decrements # of players that can go
                 if(!playerStatus[player->getPlayerName()]){

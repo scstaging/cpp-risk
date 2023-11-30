@@ -4,9 +4,11 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include "Player.h"
 using namespace std;
 
 class Territory;
+class Player;
 
 
 class Continent
@@ -18,7 +20,6 @@ private:
 
 public:
     Continent();
-    Continent(string name);
     Continent(string name);
     Continent(string name, int bonus);
     string getNameOfContinent();

@@ -167,7 +167,7 @@ PlayerStrategy* Player::getStrategy()
 }
 
 /* Mandatory Features For A1 */
-bool Player::issueOrder(Deck* deck, Map* map, GameEngine *game)
+bool Player::issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game)
 {
     return this->getStrategy()->issueOrder(this, deck, map, game);
 }

@@ -1,11 +1,9 @@
-#pragma once
-
 #include <iostream>
-#include <random>
 #include "Player.h"
 #include "PlayerStrategies.h"
 #include "Orders.h"
 #include <algorithm>
+#include <random>
 
 // HumanPlayerStrategy Class
 
@@ -300,7 +298,7 @@ bool AggressivePlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, 
 
                     int* numTroops = defendedTerritories[i]->getNumArmies();
 
-                    if(numTroops > 0){
+                    if(*numTroops > 0){
                         //List of territories the player can attack. 
                         vector<Territory*> attackOptions;
                         int counter;
@@ -523,6 +521,7 @@ bool BenevolentPlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, 
         }
         }
     }
+    return true;
 
 }
 
@@ -557,6 +556,23 @@ bool NeutralPlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, Gam
     cout << "Neutral Player ends his turn" << endl;
     
     return false;
+}
+
+// List of attackable territories for Benevolent Player
+    // (This is created for the sake of redundency)
+vector<Territory*> NeutralPlayerStrategy::toAttack(Player* player)
+{
+    // Creates empty vector array
+    vector<Territory*> attackable = {};
+
+    // Returns empty vector array
+    return attackable;
+}
+
+// List of territories under Benevolent Player control
+vector<Territory*> NeutralPlayerStrategy::toDefend(Player* player)
+{
+    return player->getTerritories();
 }
 // ** END NEUTRAL PLAYER ** //
 
@@ -616,6 +632,10 @@ bool CheaterPlayerStrategy::issueOrder(Player* player, Deck* deck, Map* map, Gam
         // Transfers ownership
         toConquer[i]->setOwnerPlayer(player);
     }
+
+    // Ends turn
+    cout << "Cheater Player ends turn" << endl;
+    return false;
 }
 
 // List of adjacent territories to Cheataer Player

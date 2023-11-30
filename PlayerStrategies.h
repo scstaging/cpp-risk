@@ -2,6 +2,13 @@
 
 #include "Map.h"
 #include "Player.h"
+#include "GameEngine.h"
+
+class Player;
+class Map;
+class GameEngine;
+class Territory;
+class Continent;
 
 /**
  * @brief Strategy class that other concrete strategy classes will inherit
@@ -10,9 +17,6 @@
 class PlayerStrategy {
 
     public:
-        PlayerStrategy();
-        virtual ~PlayerStrategy();
-
         virtual bool issueOrder(Player* player, Deck* deck, Map* map, GameEngine *game) = 0;
         virtual vector<Territory*> toDefend(Player *player) = 0;
         virtual vector<Territory*> toAttack(Player *player) = 0;
