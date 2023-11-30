@@ -17,7 +17,8 @@ public:
         addplayer,
         gamestart,
         replay,
-        quit
+        quit,
+        tournament
     };
 
     Command(string); // list of constructors and operator to create the command object
