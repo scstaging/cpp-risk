@@ -4,8 +4,14 @@
 #include <istream>
 #include <fstream>
 #include "CommandProcessing.h"
+#include <sstream>
+
 
 using namespace std;
+
+Command::Command()
+{
+}
 
 // Default constructor
 Command::Command(string commandStr) : commandStr(commandStr)
@@ -42,11 +48,6 @@ Command::Command(commandType command, string addition)
 	case commandType::quit:
 		commandStr = "quit";
 		commandNumber = 5;
-		break;
-	case commandType::tournament:
-		commandStr = "tournament";
-		this->addition = addition;
-		commandNumber = 6;
 		break;
 	}
 }
@@ -90,11 +91,9 @@ void Command::saveEffect(Command *command)
 	case 5:
 		command->effect = "Quitting the game";
 		break;
-	/*
-	case 6:
-		command->effect = "Command for testing purposes that skips the main game loop";
-		break;
-	*/
+	// case 6:
+	// 	command->effect = "Command for testing purposes that skips the main game loop";
+	// 	break;
 	case 6:
 		command->effect = "Entering tournament mode: " + command->addition;
 		break;
@@ -114,7 +113,7 @@ void Command::setCommandStr()
 }
 
 // Getter for the effect
-string Command::getEffect() 
+string Command::getEffect()
 {
 	return effect;
 }
@@ -125,22 +124,15 @@ string Command::getAddition()
 	return addition;
 }
 
-// stringToLog implementation for ILoggable
-// string Command::stringToLog()
-// {
-// 	string command = "Command issued: " + getcommandStr() + "\nCommand's effect: " + getEffect();
-// 	return command;
-// }
-
 // Overloading the output operator
 ostream &operator<<(ostream &out, const Command &command)
 {
 	return out << "Command: " << command.commandStr << command.addition << " | Effect: " << command.effect << '\n';
 }
 
-//Default constructor
-CommandProcessor::CommandProcessor() {
-	
+// Default constructor
+CommandProcessor::CommandProcessor()
+{
 }
 
 // Copy constructor
@@ -172,7 +164,7 @@ CommandProcessor &CommandProcessor::operator=(const CommandProcessor &cmdPro)
 // Destructor for CommandProcessor
 CommandProcessor::~CommandProcessor()
 {
-//delete destrcut the object
+	// delete destrcut the object
 }
 
 // Reads the command from the console
@@ -197,17 +189,73 @@ Command *CommandProcessor::readCommand()
 		cin >> addition;
 		cout << '\n';
 	}
-	
+
 	else if (commandStr == "gamestart")
 	{
 		setcmdProPause(true);
 	}
+	else if (commandStr == "tournament")
+	{
+	string addition;
+    cout << "Enter tournament command: ";
+    getline(cin, addition); // Read the entire command line input
 
-	if (commandStr == "tournament") {
-		cout << "Enter tournament parameters: ";
-		//maybe need to add something here
-		getline(cin, addition); // read the entire line after the command
-		cout <<'\n';
+    istringstream iss(addition); // Use istringstream for parsing
+    string token; // Variable to hold each token
+
+    vector<string*> mapFiles; // Vector to store map file names
+    vector<string*> playerStrategies; // Vector to store player strategies
+    int numberOfGames = 0; // Variable to store number of games
+    int maxNumberOfTurns = 0; // Variable to store maximum number of turns
+
+    // Loop through each token in the input string
+    while (iss >> token) {
+        if (token == "-M") {
+            // Parse map files list
+            string maps;
+            iss.ignore(2); // Ignore '<'
+            getline(iss, maps, '>'); // Read until '>'
+            istringstream mapStream(maps); // Stream for parsing maps
+            string map;
+            while (getline(mapStream, map, ',')) { // Parse each map
+			string* ptrMap = &map;
+                mapFiles.push_back(ptrMap);
+				delete(ptrMap);
+				ptrMap=NULL;
+            }
+        } else if (token == "-P") {
+            // Parse player strategies list
+            string strategies;
+            iss.ignore(2); // Ignore '<'
+            getline(iss, strategies, '>'); // Read until '>'
+            istringstream strategyStream(strategies); // Stream for parsing strategies
+            string strategy;
+            while (getline(strategyStream, strategy, ',')) { // Parse each strategy
+              string* ptrStrategy = &strategy;
+			    playerStrategies.push_back(ptrStrategy);
+				delete(ptrStrategy);
+				ptrStrategy= NULL;
+            }
+        } else if (token == "-G") {
+            // Parse number of games
+            iss.ignore(2); // Ignore '<'
+            iss >> numberOfGames; // Read number of games
+            iss.ignore(); // Ignore '>'
+        } else if (token == "-D") {
+            // Parse maximum number of turns
+            iss.ignore(2); // Ignore '<'
+            iss >> maxNumberOfTurns; // Read max number of turns
+            iss.ignore(); // Ignore '>'
+        }
+    }
+
+    // Output parsed data (for verification)
+    std::cout << "Maps: ";
+    for (const auto& map : mapFiles) std::cout << map << " ";
+    std::cout << "\nStrategies: ";
+    for (const auto& strategy : playerStrategies) std::cout << strategy << " ";
+    std::cout << "\nNumber of Games: " << numberOfGames << "\nMax Number of Turns: " << maxNumberOfTurns << std::endl;
+     return new Tournament (mapFiles,playerStrategies,numberOfGames,maxNumberOfTurns);    
 	}
 
 	// Switch case to decide which command object to create based on the user's input
@@ -225,8 +273,8 @@ Command *CommandProcessor::readCommand()
 		return new Command(Command::commandType::replay, addition);
 	case 5:
 		return new Command(Command::commandType::quit, addition);
-	case 6:
-		return new Command(Command::commandType::tournament, addition);
+		// case 6:
+		//      return new Tournament();
 
 	default:
 		// If none of the valid commands are read then the default constructor with the user's input is called
@@ -257,51 +305,52 @@ bool CommandProcessor::validate(Command *command, GameEngine *game)
 
 	if ((userCommand == "loadmap" && currentSate == "start") || (userCommand == "loadmap" && currentSate == "maploaded"))
 	{
-		cout << userCommand << " is valid in the state: " << currentSate; 
-		game->update(userCommand); return true;
+		cout << userCommand << " is valid in the state: " << currentSate;
+		game->update(userCommand);
+		return true;
 	}
 	else if (userCommand == "validatemap" && currentSate == "maploaded")
 	{
-		cout << userCommand << " is valid in the state: " << currentSate; 
-		game->update(userCommand); return true;
+		cout << userCommand << " is valid in the state: " << currentSate;
+		game->update(userCommand);
+		return true;
 	}
 	else if ((userCommand == "addplayer" && currentSate == "mapvalidated") || (userCommand == "addplayer" && currentSate == "playersadded"))
 	{
 		cout << userCommand << " is valid in the state: " << currentSate;
-		game->update(userCommand); return true;
+		game->update(userCommand);
+		return true;
 	}
 	else if (userCommand == "gamestart" && currentSate == "playersadded")
 	{
 		cout << userCommand << " is valid in the state: " << currentSate;
-		game->update(userCommand); return true;
+		game->update(userCommand);
+		return true;
 	}
 	else if (userCommand == "replay" && currentSate == "win")
 	{
 		cout << userCommand << " is valid in the state: " << currentSate;
-		game->update(userCommand); return true;
-	} 
+		game->update(userCommand);
+		return true;
+	}
 	else if (userCommand == "quit" && currentSate == "win")
 	{
 		cout << userCommand << " is valid in the state: " << currentSate;
-		game->update(userCommand); return true;
-	}
-
-	else if (userCommand == "tournament" && currentSate == "start") {
-		//still need to implement the logic to check the correct input here 
-		cout << userCommand << " is valid in the state: " << currentSate;
-
-		game->update(userCommand); return true;
+		game->update(userCommand);
+		return true;
 	}
 
 	else
 	{
 		if (this->getIndexCmdVector(userCommand) == -1)
 		{
-			cout << "Invalid command"; return false;
+			cout << "Invalid command";
+			return false;
 		}
 		else
 		{
-			cout << userCommand << " is not a vlalid command in this state"; return false;
+			cout << userCommand << " is not a vlalid command in this state";
+			return false;
 		}
 	}
 }
@@ -570,4 +619,13 @@ Command *FileCommandProcessorAdapter::readCommand()
 	{
 		return new Command(commands[index]);
 	}
+}
+
+Tournament::Tournament()
+{
+}
+
+Tournament::Tournament(vector<string *> m, vector<string *> p, int g, int t)
+{
+
 }

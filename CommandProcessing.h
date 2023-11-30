@@ -20,7 +20,7 @@ public:
         quit,
         tournament
     };
-
+    Command();
     Command(string); // list of constructors and operator to create the command object
     Command(commandType, string);
     Command(const Command &command);
@@ -92,7 +92,7 @@ private:
     bool cmdProPause = false;
 
     // Vector of valid commands
-    vector<string> commandVector = {"loadmap", "validatemap", "addplayer", "gamestart", "replay", "quit"};
+    vector<string> commandVector = {"loadmap", "validatemap", "addplayer", "gamestart", "replay", "quit", "tournament"};
 };
 
 // FileLineReader class - reads from a file
@@ -132,4 +132,16 @@ private:
 
     // Vector of all commands read from the file
     vector<string> commands{};
+};
+
+
+class Tournament : public Command {
+private:
+vector<string*> maps;
+vector<string*> playersStrategies;
+int games;
+int turns;
+public:
+Tournament();
+Tournament(vector<string*>m, vector<string*>p, int g, int t);
 };
