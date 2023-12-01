@@ -49,6 +49,13 @@ Command::Command(commandType command, string addition)
 		commandStr = "quit";
 		commandNumber = 5;
 		break;
+
+	case commandType::tournament:
+		commandStr = "tournament";
+		this->addition = addition;
+		commandNumber = 6;
+		break;
+
 	}
 }
 
@@ -196,68 +203,76 @@ Command *CommandProcessor::readCommand()
 	}
 	else if (commandStr == "tournament")
 	{
-	string addition;
-    cout << "Enter tournament command: ";
-    getline(cin, addition); // Read the entire command line input
+		//not sure cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore the leftover newline
+		cout << "Enter tournament command: ";
+		getline(cin, addition); // Read the entire command line input
 
-    istringstream iss(addition); // Use istringstream for parsing
-    string token; // Variable to hold each token
+		istringstream iss(addition); // Use istringstream for parsing
+		string token; // Variable to hold each token
 
-    vector<string*> mapFiles; // Vector to store map file names
-    vector<string*> playerStrategies; // Vector to store player strategies
-    int numberOfGames = 0; // Variable to store number of games
-    int maxNumberOfTurns = 0; // Variable to store maximum number of turns
+		vector<string*> mapFiles; // Vector to store map file names
+		vector<string*> playerStrategies; // Vector to store player strategies
+		int numberOfGames = 0; // Variable to store number of games
+		int maxNumberOfTurns = 0; // Variable to store maximum number of turns
 
-    // Loop through each token in the input string
-    while (iss >> token) {
-        if (token == "-M") {
-            // Parse map files list
-            string maps;
-            iss.ignore(2); // Ignore '<'
-            getline(iss, maps, '>'); // Read until '>'
-            istringstream mapStream(maps); // Stream for parsing maps
-            string map;
-            while (getline(mapStream, map, ',')) { // Parse each map
-			string* ptrMap = &map;
-                mapFiles.push_back(ptrMap);
-				delete(ptrMap);
-				ptrMap=NULL;
-            }
-        } else if (token == "-P") {
-            // Parse player strategies list
-            string strategies;
-            iss.ignore(2); // Ignore '<'
-            getline(iss, strategies, '>'); // Read until '>'
-            istringstream strategyStream(strategies); // Stream for parsing strategies
-            string strategy;
-            while (getline(strategyStream, strategy, ',')) { // Parse each strategy
-              string* ptrStrategy = &strategy;
-			    playerStrategies.push_back(ptrStrategy);
-				delete(ptrStrategy);
-				ptrStrategy= NULL;
-            }
-        } else if (token == "-G") {
-            // Parse number of games
-            iss.ignore(2); // Ignore '<'
-            iss >> numberOfGames; // Read number of games
-            iss.ignore(); // Ignore '>'
-        } else if (token == "-D") {
-            // Parse maximum number of turns
-            iss.ignore(2); // Ignore '<'
-            iss >> maxNumberOfTurns; // Read max number of turns
-            iss.ignore(); // Ignore '>'
-        }
-    }
+		// Loop through each token in the input string
+		while (iss >> token) {
+			if (token == "-M") {
+				// Parse map files list
+				string maps;
+				iss.ignore(2); // Ignore '<'
+				getline(iss, maps, '>'); // Read until '>'
+				istringstream mapStream(maps); // Stream for parsing maps
+				string map;
+				while (getline(mapStream, map, ',')) { // Parse each map
+					string* ptrMap = new string(map);
+					mapFiles.push_back(ptrMap);
+				}
+			} else if (token == "-P") {
+				// Parse player strategies list
+				string strategies;
+				iss.ignore(2); // Ignore '<'
+				getline(iss, strategies, '>'); // Read until '>'
+				istringstream strategyStream(strategies); // Stream for parsing strategies
+				string strategy;
+				while (getline(strategyStream, strategy, ',')) { // Parse each strategy
+					string* ptrStrategy = new string(strategy);
+					playerStrategies.push_back(ptrStrategy);
+				}
+			} else if (token == "-G") {
+				// Parse number of games
+				iss.ignore(2); // Ignore '<'
+				iss >> numberOfGames; // Read number of games
+				iss.ignore(); // Ignore '>'
+			} else if (token == "-D") {
+				// Parse maximum number of turns
+				iss.ignore(2); // Ignore '<'
+				iss >> maxNumberOfTurns; // Read max number of turns
+				iss.ignore(); // Ignore '>'
+			}
+		}
 
-    // Output parsed data (for verification)
-    std::cout << "Maps: ";
-    for (const auto& map : mapFiles) std::cout << map << " ";
-    std::cout << "\nStrategies: ";
-    for (const auto& strategy : playerStrategies) std::cout << strategy << " ";
-    std::cout << "\nNumber of Games: " << numberOfGames << "\nMax Number of Turns: " << maxNumberOfTurns << std::endl;
-     return new Tournament (mapFiles,playerStrategies,numberOfGames,maxNumberOfTurns);    
+		return new Tournament(mapFiles,playerStrategies,numberOfGames,maxNumberOfTurns);
+
+		// TODO: Use mapFiles and playerStrategies as needed
+
+		// IMPORTANT: Remember to deallocate the memory later
+		// for (auto ptr : mapFiles) { delete ptr; }
+		// for (auto ptr : playerStrategies) { delete ptr; }
+
+
+		// Output parsed data (for verification)
+		cout << "Maps: ";
+		for (const auto& map : mapFiles) cout << *map << " "; // Dereference the pointer
+		cout << "\nStrategies: ";
+		for (const auto& strategy : playerStrategies) cout << *strategy << " "; // Dereference the pointer
+		cout << "\nNumber of Games: " << numberOfGames;
+		cout << "\nMax Number of Turns: " << maxNumberOfTurns << endl;
+
+ 
 	}
 
+   
 	// Switch case to decide which command object to create based on the user's input
 	switch (getIndexCmdVector(commandStr))
 	{
@@ -273,9 +288,6 @@ Command *CommandProcessor::readCommand()
 		return new Command(Command::commandType::replay, addition);
 	case 5:
 		return new Command(Command::commandType::quit, addition);
-		// case 6:
-		//      return new Tournament();
-
 	default:
 		// If none of the valid commands are read then the default constructor with the user's input is called
 		return new Command(commandStr);
@@ -339,6 +351,36 @@ bool CommandProcessor::validate(Command *command, GameEngine *game)
 		game->update(userCommand);
 		return true;
 	}
+
+	else if (userCommand == "tournament" && currentSate == "start") {
+		Tournament* tournamentCmd = dynamic_cast<Tournament*>(command); //using dynamic casting here 
+		vector<string*> mapFiles = tournamentCmd->getMapFiles(); 
+        vector<string*> playerStrategies = tournamentCmd->getPlayerStrategies();
+        int numberOfGames = tournamentCmd->getNumberOfGames();
+        int maxNumberOfTurns = tournamentCmd->getMaxNumberOfTurns();
+
+		
+		if (mapFiles.size() < 1 || mapFiles.size() > 5) {
+            cout << "Invalid number of maps." << endl;
+            return false;
+        }
+        if (playerStrategies.size() < 2 || playerStrategies.size() > 4) {
+            cout << "Invalid number of player strategies." << endl;
+            return false;
+        }
+        if (numberOfGames < 1 || numberOfGames > 5) {
+            cout << "Invalid number of games." << endl;
+            return false;
+        }
+        if (maxNumberOfTurns < 10 || maxNumberOfTurns > 50) {
+            cout << "Invalid number of turns." << endl;
+            return false;
+        }
+        cout << userCommand << " is valid in the state: " << currentSate;
+        game->update(userCommand); 
+		return true;
+    }
+
 
 	else
 	{
@@ -625,7 +667,22 @@ Tournament::Tournament()
 {
 }
 
-Tournament::Tournament(vector<string *> m, vector<string *> p, int g, int t)
-{
+Tournament::Tournament(std::vector<std::string*> m, std::vector<std::string*> p, int g, int t)
+    : mapsFiles(m), listOfplayersStrategies(p), games(g), turns(t) {
+}
 
+vector<string*>& Tournament::getMapFiles() {
+    return mapsFiles;
+}
+
+vector<string*>& Tournament::getPlayerStrategies() {
+    return listOfplayersStrategies;
+}
+
+int Tournament::getNumberOfGames() const {
+    return games;
+}
+
+int Tournament::getMaxNumberOfTurns() const {
+    return turns;
 }
