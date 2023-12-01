@@ -137,11 +137,16 @@ private:
 
 class Tournament : public Command {
 private:
-vector<string*> maps;
-vector<string*> playersStrategies;
+vector<string*> mapsFiles;
+vector<string*> listOfplayersStrategies;
 int games;
 int turns;
 public:
 Tournament();
 Tournament(vector<string*>m, vector<string*>p, int g, int t);
+// Getter methods
+    vector<string*>& getMapFiles();
+    vector<string*>& getPlayerStrategies();
+    int getNumberOfGames() const;
+    int getMaxNumberOfTurns() const;
 };
