@@ -295,7 +295,7 @@ class GameEngine : public Subject
         Player* getOwnerOfTerritory(Territory* territory);
 
         // Function used for the tournament execution
-        void executionTournmaent(Tournament* t);
+        void executionTournament(Tournament* t);
 };
 
 /*
