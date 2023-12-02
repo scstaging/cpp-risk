@@ -481,6 +481,10 @@ bool CommandProcessor::getcmdProPause()
  	return "";
  }
 
+string Command::stringToLog()
+{
+	return "";	
+}
 // Overloading the output operator
 ostream &operator<<(ostream &out, const vector<Command *> &commandList)
 {
