@@ -658,7 +658,7 @@ Player *GameEngine::getOwnerOfTerritory(Territory *territory)
 void GameEngine::executionTournament(Tournament* t)
 {
     vector<string*> strategy = t->getPlayerStrategies();
-    for (int i = 0; i < listOfPlayer.size(); i++)
+    for (int i = 0; i < listOfPlayers.size(); i++)
     {
         if (strategy[i] == "Aggressive")
         {
