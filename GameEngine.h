@@ -6,6 +6,7 @@
 #include <set>
 #include <utility>
 #include <unordered_map>
+#include "CommandProcessing.h"
 
 
 class GameEngine;
@@ -292,6 +293,9 @@ class GameEngine : public Subject
         
         // determine the owner of a territory
         Player* getOwnerOfTerritory(Territory* territory);
+
+        // Function used for the tournament execution
+        void executionTournmaent(Tournament* t);
 };
 
 /*
