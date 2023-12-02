@@ -687,6 +687,7 @@ Command *FileCommandProcessorAdapter::readCommand()
 	{
 		return new Command(commands[index]);
 	}
+	return new Command();
 }
 
 Tournament::Tournament()
