@@ -655,45 +655,45 @@ Player *GameEngine::getOwnerOfTerritory(Territory *territory)
 }
 
 // Function that implements 
+// Function that implements 
 void GameEngine::executionTournament(Tournament* t)
 {
     vector<string*> strategy = t->getPlayerStrategies();
-    for (int i = 0; i < listOfPlayers.size(); i++)
+    int i = 0;
+
+    for (auto const player : listOfPlayers )
     {
-        if (strategy[i] == "Aggressive")
+        if (*strategy[i] == "Aggressive")
         {
             AggressivePlayerStrategy* p = new AggressivePlayerStrategy();
-            listOfPlayers[i].setStrategy(p);
+            player->setStrategy(p);
         }
-        if (strategy[i] == "Human")
-        {
-            HumanPlayerStrategy* p = new HumanPlayerStrategy();
-            listOfPlayers[i].setStrategy(p);
-        }
-        if (strategy[i] == "Benevolent")
+        if (*strategy[i] == "Benevolent")
         {
             BenevolentPlayerStrategy* p = new BenevolentPlayerStrategy();
 
-            listOfPlayers[i].setStrategy(p);
+             player->setStrategy(p);
         }
-        if (strategy[i] == "Neutral")
+        if (*strategy[i] == "Neutral")
         {
             NeutralPlayerStrategy* p = new NeutralPlayerStrategy();
 
-            listOfPlayers[i].setStrategy(p);
+             player->setStrategy(p);
         }
-        if (strategy[i] == "Cheater")
+        if (*strategy[i] == "Cheater")
         {
-            CheaterPlayerStrategy* p = new CheaterPlayerStrategy();
-            listOfPlayers[i].setStrategy(p);
+            CheaterPlayerStrategy *p = new CheaterPlayerStrategy();
+             player->setStrategy(p);
         }
+        i = i+1;
     }
+
      vector <Map*> tournamentMaps;
       vector <string*> files = t->getMapFiles(); 
      for (int i=0; i<files.size(); i++){
-        tournamentMaps.push_back(allMaps[files[i]]);
+        tournamentMaps.push_back(allMaps[*files[i]]);
      }
-     for (int i =0; i<t->getNumberOfGames; i++){
+     for (int i =0; i<t->getNumberOfGames(); i++){
         for (int j=0; j<tournamentMaps.size();j++){
             this->map = tournamentMaps[i]; 
             this->mainGameLoop();
