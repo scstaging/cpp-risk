@@ -5,6 +5,7 @@
 #include <fstream>
 #include "CommandProcessing.h"
 #include <sstream>
+#include <unordered_set>
 
 
 using namespace std;
@@ -254,13 +255,12 @@ Command *CommandProcessor::readCommand()
 
 		return new Tournament(mapFiles,playerStrategies,numberOfGames,maxNumberOfTurns);
 
-		// TODO: Use mapFiles and playerStrategies as needed
 
-		// IMPORTANT: Remember to deallocate the memory later
+		// to deallocate the memory later
 		// for (auto ptr : mapFiles) { delete ptr; }
 		// for (auto ptr : playerStrategies) { delete ptr; }
 
-
+		
 		// Output parsed data (for verification)
 		cout << "Maps: ";
 		for (const auto& map : mapFiles) cout << *map << " "; // Dereference the pointer
@@ -359,15 +359,36 @@ bool CommandProcessor::validate(Command *command, GameEngine *game)
         int numberOfGames = tournamentCmd->getNumberOfGames();
         int maxNumberOfTurns = tournamentCmd->getMaxNumberOfTurns();
 
+	//checks if the maps are different
+	unordered_set<string> mapSet;
+	for (const auto& mapFile : mapFiles) {
+		if (mapSet.find(*mapFile) != mapSet.end()) {
+			cout << "Duplicate map files are not allowed." << endl;
+			return false;
+		}
+		mapSet.insert(*mapFile);
+	}
+	// Now check if the count of unique maps is within the valid range (1 to 5)
+	if (mapSet.size() < 1 || mapSet.size() > 5) {
+		cout << "Invalid number of maps." << endl;
+		return false;
+	}
+
 		
-		if (mapFiles.size() < 1 || mapFiles.size() > 5) {
-            cout << "Invalid number of maps." << endl;
-            return false;
-        }
-        if (playerStrategies.size() < 2 || playerStrategies.size() > 4) {
-            cout << "Invalid number of player strategies." << endl;
-            return false;
-        }
+	// Check if the player strategies are different
+	std::unordered_set<std::string> strategySet;
+	for (const auto& strategy : playerStrategies) {
+		if (strategySet.find(*strategy) != strategySet.end()) {
+			std::cout << "Duplicate player strategies are not allowed." << std::endl;
+			return false;
+		}
+		strategySet.insert(*strategy);
+	}
+	// Check if the count of unique player strategies is within the valid range (2 to 4)
+	if (strategySet.size() < 2 || strategySet.size() > 4) {
+		std::cout << "Invalid number of player strategies." << std::endl;
+		return false;
+	}	
         if (numberOfGames < 1 || numberOfGames > 5) {
             cout << "Invalid number of games." << endl;
             return false;
