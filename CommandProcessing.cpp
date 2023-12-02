@@ -476,10 +476,10 @@ bool CommandProcessor::getcmdProPause()
 }
 
 // // stringToLog implementation for ILoggable
-// string CommandProcessor::stringToLog()
-// {
-// 	return "Inserted command: " + commandList.back()->getcommandStr() + " into the list.";
-// }
+ string CommandProcessor::stringToLog()
+ {
+ 	return "";
+ }
 
 // Overloading the output operator
 ostream &operator<<(ostream &out, const vector<Command *> &commandList)
