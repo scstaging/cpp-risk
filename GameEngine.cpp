@@ -654,6 +654,53 @@ Player *GameEngine::getOwnerOfTerritory(Territory *territory)
     return nullptr; // No player owns the territory
 }
 
+// Function that implements 
+void GameEngine::executionTournament(Tournament* t)
+{
+    vector<string*> strategy = t->getPlayerStrategies();
+    for (int i = 0; i < listOfPlayer.size(); i++)
+    {
+        if (strategy[i] == "Aggressive")
+        {
+            AggressivePlayerStrategy* p = new AggressivePlayerStrategy();
+            listOfPlayers[i].setStrategy(p);
+        }
+        if (strategy[i] == "Human")
+        {
+            HumanPlayerStrategy* p = new HumanPlayerStrategy();
+            listOfPlayers[i].setStrategy(p);
+        }
+        if (strategy[i] == "Benevolent")
+        {
+            BenevolentPlayerStrategy* p = new BenevolentPlayerStrategy();
+
+            listOfPlayers[i].setStrategy(p);
+        }
+        if (strategy[i] == "Neutral")
+        {
+            NeutralPlayerStrategy* p = new NeutralPlayerStrategy();
+
+            listOfPlayers[i].setStrategy(p);
+        }
+        if (strategy[i] == "Cheater")
+        {
+            CheaterPlayerStrategy* p = new CheaterPlayerStrategy();
+            listOfPlayers[i].setStrategy(p);
+        }
+    }
+     vector <Map*> tournamentMaps;
+      vector <string*> files = t->getMapFiles(); 
+     for (int i=0; i<files.size(); i++){
+        tournamentMaps.push_back(allMaps[files[i]]);
+     }
+     for (int i =0; i<t->getNumberOfGames; i++){
+        for (int j=0; j<tournamentMaps.size();j++){
+            this->map = tournamentMaps[i]; 
+            this->mainGameLoop();
+        }
+     }
+}
+
 /*
     References: 
 
