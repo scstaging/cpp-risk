@@ -231,7 +231,7 @@ class GameEngine : public Subject
         Map* map;
         Deck* deck;
         std::set<std::pair<Player *, Player *>> activeNegotiations;
-        unordered_map <string, Map> allMaps;
+        unordered_map <string, Map*> allMaps;
 
 
 
