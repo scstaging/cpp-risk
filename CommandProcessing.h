@@ -6,6 +6,8 @@
 
 using namespace std;
 
+class GameEngine;
+
 // Command class - object containing the information the user has written
 class Command : public Subject
 {
