@@ -13,6 +13,7 @@ class GameEngine;
 class Player;
 class Map;
 class Territory;
+class Tournament;
 
 // State Template Class
 class GameState
