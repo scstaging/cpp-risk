@@ -377,7 +377,8 @@ bool CommandProcessor::validate(Command *command, GameEngine *game)
             return false;
         }
         cout << userCommand << " is valid in the state: " << currentSate;
-        game->update(userCommand); 
+	// Now executing the tournament by calling the GameEngine
+        game->executionTournament(tournamentCmd); 
 		return true;
     }
 
